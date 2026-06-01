@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consentimento — ZONCLI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cyan:    #00F2FE;
+  --violet:  #7928CA;
+  --magenta: #FF007A;
+  --bg:      #030407;
+  --bg2:     #080b12;
+  --text:    #EFEFEF;
+  --muted:   rgba(255,255,255,0.5);
+  --border:  rgba(255,255,255,0.08);
+  --grad:    linear-gradient(135deg, #00F2FE 0%, #7928CA 50%, #FF007A 100%);
+}
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Inter', sans-serif; line-height: 1.6;
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  padding: 0 0 48px;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(0,242,254,.06) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(255,0,122,.05) 0%, transparent 65%);
+}
+
+/* Header */
+.header {
+  width: 100%; background: rgba(3,4,7,0.9);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px 24px; gap: 10px;
+}
+.header svg { flex-shrink: 0; }
+.header-brand {
+  font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 20px;
+  background: linear-gradient(90deg, #00F2FE, #7928CA, #FF007A);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* Card */
+.card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 32px 28px;
+  width: 100%; max-width: 520px; margin: 40px 24px 0;
+}
+
+.clinic-name {
+  font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px;
+}
+h1 {
+  font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 800;
+  letter-spacing: -.5px; margin-bottom: 8px;
+}
+.intro {
+  font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 28px;
+}
+
+/* Consentimentos */
+.consent-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+.consent-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.consent-item:hover { background: rgba(255,255,255,0.05); }
+.consent-item.checked { border-color: rgba(0,242,254,0.3); background: rgba(0,242,254,0.04); }
+.consent-item.required { cursor: default; }
+
+/* Checkbox custom */
+.checkbox-wrap { flex-shrink: 0; margin-top: 1px; }
+.checkbox {
+  width: 20px; height: 20px; border-radius: 6px; border: 2px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, border-color .2s;
+}
+.checkbox.on { background: var(--grad); border-color: transparent; }
+.checkbox svg { display: none; }
+.checkbox.on svg { display: block; }
+
+.consent-content { flex: 1; }
+.consent-title {
+  font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px;
+  display: flex; align-items: center; gap: 8px;
+}
+.required-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: .08em;
+  background: rgba(0,242,254,0.12); color: var(--cyan);
+  border: 1px solid rgba(0,242,254,0.25); border-radius: 100px;
+  padding: 1px 7px;
+}
+.consent-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* Divider */
+.divider { height: 1px; background: var(--border); margin: 4px 0 20px; }
+
+/* Dados do paciente */
+.patient-info { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+.patient-row { display: flex; align-items: center; gap: 8px; }
+.patient-label { font-size: 11px; color: var(--muted); width: 70px; }
+.patient-value { font-size: 13px; font-weight: 600; }
+
+/* Botão */
+.btn {
+  width: 100%; padding: 15px; border-radius: 100px; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700;
+  background: var(--grad); color: #fff;
+  transition: opacity .2s, transform .15s;
+}
+.btn:hover { opacity: .88; transform: translateY(-1px); }
+.btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+/* Estados */
+.state { display: none; }
+.state.active { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 16px 0; }
+.state-icon { font-size: 52px; }
+.state h2 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; }
+.state p { font-size: 14px; color: var(--muted); max-width: 320px; }
+
+/* Error */
+.error-box {
+  display: none; background: rgba(255,60,80,0.1); border: 1px solid rgba(255,60,80,0.3);
+  border-radius: 10px; padding: 12px 16px; margin-bottom: 16px;
+  font-size: 13px; color: #ff6b7a;
+}
+
+/* Legal */
+.legal { font-size: 11px; color: rgba(255,255,255,0.2); text-align: center; margin-top: 16px; line-height: 1.6; }
+.legal a { color: rgba(255,255,255,0.35); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <svg width="26" height="26" viewBox="0 0 100 100" fill="none">
+    <defs>
+      <linearGradient id="hg" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#00F2FE"/><stop offset="50%" stop-color="#7928CA"/><stop offset="100%" stop-color="#FF007A"/>
+      </linearGradient>
+    </defs>
+    <path d="M10 30 L10 10 L30 10" stroke="url(#hg)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M70 10 L90 10 L90 30" stroke="url(#hg)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M10 70 L10 90 L30 90" stroke="url(#hg)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M70 90 L90 90 L90 70" stroke="url(#hg)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M27 33 L73 33 L27 67 L73 67" stroke="url(#hg)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>
+  <span class="header-brand">ZONCLI</span>
+</div>
+
+<div class="card">
+
+  <!-- Formulário -->
+  <div id="form-state">
+    <div class="clinic-name" id="clinic-display">Carregando...</div>
+    <h1>Consentimentos</h1>
+    <p class="intro">
+      Para prosseguir com seu atendimento, precisamos do seu consentimento conforme a
+      Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).
+    </p>
+
+    <!-- Dados do paciente -->
+    <div class="patient-info" id="patient-info" style="display:none;">
+      <div class="patient-row">
+        <span class="patient-label">Paciente</span>
+        <span class="patient-value" id="patient-name-display">—</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="consent-list">
+
+      <!-- LGPD — obrigatório -->
+      <div class="consent-item required checked" id="item-lgpd">
+        <div class="checkbox-wrap">
+          <div class="checkbox on" id="check-lgpd">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="consent-content">
+          <div class="consent-title">
+            Tratamento de dados pessoais (LGPD)
+            <span class="required-badge">OBRIGATÓRIO</span>
+          </div>
+          <div class="consent-desc">
+            Autorizo o uso dos meus dados pessoais (nome, CPF, data de nascimento, contato e fotos clínicas)
+            exclusivamente para fins de atendimento, prontuário e documentação clínica, conforme a LGPD.
+          </div>
+        </div>
+      </div>
+
+      <!-- WhatsApp -->
+      <div class="consent-item" id="item-whatsapp" onclick="toggle('whatsapp')">
+        <div class="checkbox-wrap">
+          <div class="checkbox" id="check-whatsapp">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="consent-content">
+          <div class="consent-title">Contato via WhatsApp</div>
+          <div class="consent-desc">
+            Autorizo o envio de mensagens pelo WhatsApp para confirmação de consultas, lembretes
+            de agendamento e comunicados relacionados ao meu atendimento.
+          </div>
+        </div>
+      </div>
+
+      <!-- Marketing -->
+      <div class="consent-item" id="item-marketing" onclick="toggle('marketing')">
+        <div class="checkbox-wrap">
+          <div class="checkbox" id="check-marketing">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12l5 5L20 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="consent-content">
+          <div class="consent-title">Comunicações e promoções</div>
+          <div class="consent-desc">
+            Autorizo o recebimento de novidades, promoções e conteúdos informativos da clínica
+            por e-mail ou WhatsApp. Você pode cancelar a qualquer momento.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="error-box" id="error-box"></div>
+
+    <button class="btn" id="submit-btn" onclick="submitConsent()">
+      Confirmar meu consentimento
+    </button>
+
+    <p class="legal">
+      Ao confirmar, você concorda com nossa
+      <a href="privacy.html" target="_blank">Política de Privacidade</a> e
+      <a href="terms.html" target="_blank">Termos de Uso</a>.<br>
+      Data e hora do aceite serão registrados com seu IP.
+    </p>
+  </div>
+
+  <!-- Sucesso -->
+  <div class="state" id="success-state">
+    <div class="state-icon">✅</div>
+    <h2>Consentimento registrado!</h2>
+    <p>Seus dados foram salvos com segurança. Você pode fechar esta página.</p>
+    <p style="font-size:11px;color:rgba(255,255,255,0.2);margin-top:8px;" id="consent-timestamp"></p>
+  </div>
+
+  <!-- Erro fatal -->
+  <div class="state" id="error-state">
+    <div class="state-icon">⚠️</div>
+    <h2>Link inválido</h2>
+    <p>Este link de consentimento é inválido ou já expirou. Solicite um novo link à clínica.</p>
+  </div>
+
+  <!-- Já respondido -->
+  <div class="state" id="already-state">
+    <div class="state-icon">🔒</div>
+    <h2>Consentimento já registrado</h2>
+    <p>Seus consentimentos já foram registrados anteriormente. Obrigado!</p>
+  </div>
+
+</div>
+
+<script>
+  const SUPABASE_URL = 'https://yltkmebcrznhdswfhssm.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_VY3prJ6hS4XMk9wan9hX-w_psOZU-nz';
+
+  const params     = new URLSearchParams(window.location.search);
+  const patientId  = params.get('patient_id');
+  const token      = params.get('token');
+  const clinicName = params.get('clinic') ?? 'ZONCLI';
+
+  const state = { whatsapp: false, marketing: false };
+
+  function toggle(key) {
+    state[key] = !state[key];
+    const item  = document.getElementById('item-' + key);
+    const check = document.getElementById('check-' + key);
+    if (state[key]) { item.classList.add('checked'); check.classList.add('on'); }
+    else            { item.classList.remove('checked'); check.classList.remove('on'); }
+  }
+
+  function showState(id) {
+    ['form-state','success-state','error-state','already-state'].forEach(s => {
+      document.getElementById(s).style.display = 'none';
+      document.getElementById(s).classList.remove('active');
+    });
+    const el = document.getElementById(id);
+    el.style.display = 'flex';
+    el.classList.add('active');
+    if (id === 'form-state') el.style.display = 'block';
+  }
+
+  function showError(msg) {
+    const box = document.getElementById('error-box');
+    box.textContent = msg;
+    box.style.display = 'block';
+  }
+
+  async function supabaseFetch(path, method, body) {
+    const r = await fetch(SUPABASE_URL + path, {
+      method,
+      headers: {
+        'Content-Type':  'application/json',
+        'apikey':        SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer':        method === 'PATCH' ? 'return=minimal' : '',
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    return r;
+  }
+
+  async function loadPatient() {
+    if (!patientId || !token) { showState('error-state'); return; }
+
+    document.getElementById('clinic-display').textContent = clinicName;
+
+    try {
+      const r = await supabaseFetch(
+        `/rest/v1/patients?id=eq.${patientId}&lgpd_token=eq.${token}&select=name,lgpd_consent,whatsapp_consent,marketing_consent`,
+        'GET'
+      );
+      const data = await r.json();
+      if (!data || data.length === 0) { showState('error-state'); return; }
+
+      const p = data[0];
+
+      // Já tinha consentido antes
+      if (p.lgpd_consent) { showState('already-state'); return; }
+
+      // Mostra nome
+      if (p.name) {
+        document.getElementById('patient-name-display').textContent = p.name;
+        document.getElementById('patient-info').style.display = 'flex';
+      }
+    } catch {
+      showState('error-state');
+    }
+  }
+
+  async function submitConsent() {
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Registrando...';
+
+    try {
+      const now = new Date().toISOString();
+      const r = await supabaseFetch(
+        `/rest/v1/patients?id=eq.${patientId}&lgpd_token=eq.${token}`,
+        'PATCH',
+        {
+          lgpd_consent:       true,
+          lgpd_date:          now,
+          lgpd_method:        'whatsapp',
+          whatsapp_consent:   state.whatsapp,
+          whatsapp_consent_date: state.whatsapp ? now : null,
+          marketing_consent:  state.marketing,
+          marketing_consent_date: state.marketing ? now : null,
+        }
+      );
+
+      if (!r.ok) throw new Error('Falha ao salvar');
+
+      document.getElementById('consent-timestamp').textContent =
+        'Registrado em: ' + new Date().toLocaleString('pt-BR');
+      showState('success-state');
+    } catch {
+      btn.disabled = false;
+      btn.textContent = 'Confirmar meu consentimento';
+      showError('Não foi possível registrar seu consentimento. Tente novamente.');
+    }
+  }
+
+  loadPatient();
+</script>
+
+</body>
+</html>

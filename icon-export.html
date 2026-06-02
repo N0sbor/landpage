@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>ZONCLI — Exportar Ícone</title>
+<style>
+  body { background: #1a1a2e; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; font-family: sans-serif; gap: 24px; }
+  canvas { border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  button {
+    padding: 12px 28px; border: none; border-radius: 100px; cursor: pointer;
+    font-size: 14px; font-weight: 700; transition: opacity .2s;
+  }
+  button:hover { opacity: .85; }
+  .btn-512  { background: linear-gradient(135deg,#00F2FE,#7928CA,#FF007A); color: #fff; }
+  .btn-1024 { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+  .btn-ic   { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.12); font-size: 12px; }
+  p { color: rgba(255,255,255,0.4); font-size: 13px; text-align: center; }
+</style>
+</head>
+<body>
+
+<canvas id="c" width="512" height="512"></canvas>
+
+<div class="btns">
+  <button class="btn-512"  onclick="download(512)">⬇ Baixar 512×512 (Google Play)</button>
+  <button class="btn-1024" onclick="download(1024)">⬇ Baixar 1024×1024 (App Store)</button>
+  <button class="btn-ic"   onclick="download(192)">⬇ 192×192 (Android adaptive)</button>
+</div>
+
+<p>Sem fundo arredondado — o Google Play aplica a máscara automaticamente.</p>
+
+<script>
+function drawIcon(canvas, size) {
+  const ctx = canvas.getContext('2d');
+  canvas.width  = size;
+  canvas.height = size;
+
+  const s = size / 512; // scale factor
+
+  // Background
+  ctx.fillStyle = '#030407';
+  ctx.fillRect(0, 0, size, size);
+
+  // Subtle atmosphere glow
+  const g1 = ctx.createRadialGradient(size*.18, size*.35, 0, size*.18, size*.35, size*.55);
+  g1.addColorStop(0, 'rgba(0,242,254,0.07)');
+  g1.addColorStop(1, 'transparent');
+  ctx.fillStyle = g1;
+  ctx.fillRect(0, 0, size, size);
+
+  const g2 = ctx.createRadialGradient(size*.85, size*.72, 0, size*.85, size*.72, size*.5);
+  g2.addColorStop(0, 'rgba(255,0,122,0.06)');
+  g2.addColorStop(1, 'transparent');
+  ctx.fillStyle = g2;
+  ctx.fillRect(0, 0, size, size);
+
+  // Gradient for strokes
+  const grad = ctx.createLinearGradient(0, 0, size, size);
+  grad.addColorStop(0,   '#00F2FE');
+  grad.addColorStop(0.5, '#7928CA');
+  grad.addColorStop(1,   '#FF007A');
+
+  ctx.strokeStyle = grad;
+  ctx.lineCap  = 'round';
+  ctx.lineJoin = 'round';
+
+  // Padding
+  const pad  = 80 * s;
+  const br   = 28 * s; // bracket arm length
+  const thick = 22 * s; // bracket stroke
+  const zThick = 32 * s; // Z stroke
+
+  const l = pad;           // left
+  const r = size - pad;    // right
+  const t = pad;           // top
+  const b = size - pad;    // bottom
+
+  ctx.lineWidth = thick;
+
+  // Corner TL
+  ctx.beginPath(); ctx.moveTo(l, t + br); ctx.lineTo(l, t); ctx.lineTo(l + br, t); ctx.stroke();
+  // Corner TR
+  ctx.beginPath(); ctx.moveTo(r - br, t); ctx.lineTo(r, t); ctx.lineTo(r, t + br); ctx.stroke();
+  // Corner BL
+  ctx.beginPath(); ctx.moveTo(l, b - br); ctx.lineTo(l, b); ctx.lineTo(l + br, b); ctx.stroke();
+  // Corner BR
+  ctx.beginPath(); ctx.moveTo(r - br, b); ctx.lineTo(r, b); ctx.lineTo(r, b - br); ctx.stroke();
+
+  // Z — inset dentro dos cantos
+  const zi  = pad + br * 0.8; // inset do Z
+  const zt  = pad + br * 1.1; // topo do Z
+  const zb  = size - pad - br * 1.1; // base do Z
+  const zl  = zi;
+  const zr  = size - zi;
+  const zmy = size / 2; // meio vertical
+
+  ctx.lineWidth = zThick;
+  ctx.beginPath();
+  ctx.moveTo(zl, zt);
+  ctx.lineTo(zr, zt);
+  ctx.lineTo(zl, zb);
+  ctx.lineTo(zr, zb);
+  ctx.stroke();
+}
+
+// Draw on visible canvas (512)
+const canvas = document.getElementById('c');
+drawIcon(canvas, 512);
+
+function download(size) {
+  const tmp = document.createElement('canvas');
+  drawIcon(tmp, size);
+  const a = document.createElement('a');
+  a.download = `zoncli-icon-${size}x${size}.png`;
+  a.href = tmp.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+</html>

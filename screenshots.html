@@ -12,6 +12,11 @@
   --muted: rgba(255,255,255,0.45); --border: rgba(255,255,255,0.08);
 }
 body { background: #0a0a0f; font-family: 'Inter', sans-serif; padding: 40px 20px; }
+/* Modo embed: ?s=N — mostra só aquela tela, sem header nem botões */
+body.embed { background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+body.embed h1, body.embed .sub, body.embed .shot-label, body.embed .dl-btn { display: none; }
+body.embed .grid { flex-direction: column; }
+body.embed .shot-wrap { margin: 0; }
 h1 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 24px; text-align: center; margin-bottom: 8px; }
 .sub { color: var(--muted); text-align: center; font-size: 14px; margin-bottom: 40px; }
 .grid { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
@@ -400,6 +405,15 @@ h1 { color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 24px; tex
 
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
+// Modo embed: mostra só a tela ?s=N
+const embedParam = new URLSearchParams(location.search).get('s');
+if (embedParam) {
+  document.body.classList.add('embed');
+  document.querySelectorAll('.shot-wrap').forEach((el, i) => {
+    el.style.display = (i + 1) === parseInt(embedParam) ? 'block' : 'none';
+  });
+}
+
 async function downloadShot(id, filename) {
   const el = document.getElementById(id);
   const canvas = await html2canvas(el, {

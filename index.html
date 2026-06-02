@@ -290,6 +290,14 @@ nav {
 .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 8px; }
 .card-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
 
+/* ── Screen iframes ── */
+.screen-frame {
+  width: 260px; height: 520px; border: none; border-radius: 28px;
+  overflow: hidden; display: block; margin: 0 auto;
+  box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+}
+@media(max-width:820px){ .screen-frame { width: 220px; height: 440px; } }
+
 /* ── PLANS ── */
 .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); gap: 14px; margin-top: 52px; align-items: start; }
 .plan-card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 20px; padding: 30px 26px; position: relative; transition: transform .2s; }
@@ -484,44 +492,8 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
   <div class="container">
     <div class="feat-row">
       <!-- mock: colagem -->
-      <div>
-        <div class="phone-mock">
-          <div class="pm-notch"><div class="pm-notch-pill"></div></div>
-          <div class="pm-body">
-            <div class="pm-topbar">
-              <span class="pm-topbar-title">Editor de Colagem</span>
-              <span class="pm-topbar-badge" style="background:rgba(52,211,153,0.15);color:#34d399;">Rascunho</span>
-            </div>
-            <div class="collage-mock">
-              <div class="cm-header">
-                <span class="cm-title">COLAGEM · SESSÃO #4</span>
-                <span class="cm-badge">Auto-salvo</span>
-              </div>
-              <!-- layout buttons -->
-              <div class="cm-layouts">
-                <div class="cm-layout-btn"><div style="width:16px;height:10px;display:grid;grid-template-columns:1fr 1fr;gap:1px;"><div style="background:rgba(196,181,253,0.5);border-radius:1px;"></div><div style="background:rgba(196,181,253,0.5);border-radius:1px;"></div></div></div>
-                <div class="cm-layout-btn"><div style="width:10px;height:12px;display:grid;grid-template-rows:1fr 1fr;gap:1px;"><div style="background:rgba(196,181,253,0.4);border-radius:1px;"></div><div style="background:rgba(196,181,253,0.4);border-radius:1px;"></div></div></div>
-                <div class="cm-layout-btn active"><div style="width:18px;height:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;"><div style="background:rgba(196,181,253,0.8);border-radius:1px;"></div><div style="background:rgba(196,181,253,0.8);border-radius:1px;"></div><div style="background:rgba(196,181,253,0.8);border-radius:1px;"></div></div></div>
-                <div class="cm-layout-btn"><div style="width:16px;height:11px;display:grid;grid-template-columns:1fr 1fr;gap:1px;"><div style="background:rgba(196,181,253,0.4);border-radius:1px;grid-row:span 2;"></div><div style="background:rgba(196,181,253,0.4);border-radius:1px;"></div><div style="background:rgba(196,181,253,0.4);border-radius:1px;"></div></div></div>
-              </div>
-              <div class="cm-panels">
-                <div class="cm-panel" style="background:linear-gradient(160deg,rgba(0,242,254,0.12),rgba(121,40,202,0.14));"><div class="cm-label">ANTES</div></div>
-                <div class="cm-panel" style="background:linear-gradient(160deg,rgba(121,40,202,0.12),rgba(121,40,202,0.06));"><div class="cm-label">PRÉ</div></div>
-                <div class="cm-panel" style="background:linear-gradient(160deg,rgba(121,40,202,0.08),rgba(255,0,122,0.13));"><div class="cm-label">DEPOIS</div></div>
-              </div>
-            </div>
-            <div class="pm-grad-bar"></div>
-            <!-- toolbar -->
-            <div style="display:flex;gap:5px;margin-bottom:8px;">
-              <div style="flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:8px;padding:6px;display:flex;align-items:center;justify-content:center;gap:4px;">
-                <div style="width:8px;height:8px;border-radius:50%;background:rgba(121,40,202,0.5);"></div>
-                <div style="height:4px;width:40px;border-radius:2px;background:rgba(255,255,255,0.1);"></div>
-              </div>
-              <div style="background:rgba(0,242,254,0.08);border:1px solid rgba(0,242,254,0.2);border-radius:8px;padding:6px 10px;font-size:8px;color:var(--cyan);font-weight:700;">Marca d'água</div>
-            </div>
-            <div style="background:var(--grad135);border-radius:10px;padding:9px;text-align:center;font-size:9px;font-weight:700;color:#fff;">Concluído</div>
-          </div>
-        </div>
+      <div style="display:flex;justify-content:center;">
+        <iframe src="screenshots.html?s=2" class="screen-frame" scrolling="no"></iframe>
       </div>
       <!-- texto -->
       <div class="feat-text-wrap">
@@ -558,43 +530,8 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
         </ul>
       </div>
       <!-- mock: câmera -->
-      <div>
-        <div class="phone-mock">
-          <div class="pm-notch"><div class="pm-notch-pill"></div></div>
-          <div class="pm-body">
-            <div class="pm-topbar">
-              <span class="pm-topbar-title">Câmera Clínica</span>
-              <span class="pm-topbar-badge" style="background:rgba(0,242,254,0.1);color:var(--cyan);">Sessão #7</span>
-            </div>
-            <!-- angle selector -->
-            <div style="display:flex;gap:4px;margin-bottom:10px;">
-              <div style="flex:1;padding:5px 4px;border-radius:7px;background:rgba(0,242,254,0.12);border:1px solid rgba(0,242,254,0.3);text-align:center;font-size:7px;font-weight:700;color:var(--cyan);">Frente</div>
-              <div style="flex:1;padding:5px 4px;border-radius:7px;background:rgba(255,255,255,0.04);border:1px solid var(--border);text-align:center;font-size:7px;color:rgba(255,255,255,0.3);">Perfil E</div>
-              <div style="flex:1;padding:5px 4px;border-radius:7px;background:rgba(255,255,255,0.04);border:1px solid var(--border);text-align:center;font-size:7px;color:rgba(255,255,255,0.3);">Perfil D</div>
-              <div style="flex:1;padding:5px 4px;border-radius:7px;background:rgba(255,255,255,0.04);border:1px solid var(--border);text-align:center;font-size:7px;color:rgba(255,255,255,0.3);">3/4</div>
-            </div>
-            <div class="cam-viewfinder">
-              <div class="cam-grid">
-                <div class="cam-grid-line-h" style="top:33%;"></div>
-                <div class="cam-grid-line-h" style="top:66%;"></div>
-                <div class="cam-grid-line-v" style="left:33%;"></div>
-                <div class="cam-grid-line-v" style="left:66%;"></div>
-              </div>
-              <div class="cam-corner tl"></div>
-              <div class="cam-corner tr"></div>
-              <div class="cam-corner bl"></div>
-              <div class="cam-corner br"></div>
-              <div class="cam-angle-badge">↔ FRENTE</div>
-              <!-- silhouette suggestion -->
-              <div style="width:60px;height:80px;border:1.5px dashed rgba(0,242,254,0.2);border-radius:30px 30px 20px 20px;opacity:.5;"></div>
-            </div>
-            <div class="cam-shutter-row">
-              <div class="cam-btn-sm"></div>
-              <div class="cam-shutter"></div>
-              <div class="cam-btn-sm"></div>
-            </div>
-          </div>
-        </div>
+      <div style="display:flex;justify-content:center;">
+        <iframe src="screenshots.html?s=1" class="screen-frame" scrolling="no"></iframe>
       </div>
     </div>
   </div>
@@ -605,61 +542,8 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
   <div class="container">
     <div class="feat-row">
       <!-- mock: prontuário -->
-      <div>
-        <div class="phone-mock">
-          <div class="pm-notch"><div class="pm-notch-pill"></div></div>
-          <div class="pm-body">
-            <div class="pm-topbar">
-              <span class="pm-topbar-title">Pacientes</span>
-              <span class="pm-topbar-badge" style="background:rgba(121,40,202,0.15);color:#c4b5fd;">34 ativos</span>
-            </div>
-            <div class="pron-search">
-              <div class="pron-search-icon"></div>
-              <div class="pron-search-bar"></div>
-            </div>
-            <!-- patients -->
-            <div class="pron-patient">
-              <div class="pron-avatar" style="background:linear-gradient(135deg,rgba(0,242,254,0.3),rgba(121,40,202,0.3));"></div>
-              <div class="pron-info">
-                <div class="pron-name" style="width:70%;"></div>
-                <div class="pron-sub"></div>
-              </div>
-              <span class="pron-badge" style="background:rgba(0,242,254,0.12);color:var(--cyan);">Sessão #5</span>
-            </div>
-            <div class="pron-patient">
-              <div class="pron-avatar" style="background:linear-gradient(135deg,rgba(121,40,202,0.3),rgba(255,0,122,0.3));"></div>
-              <div class="pron-info">
-                <div class="pron-name" style="width:55%;"></div>
-                <div class="pron-sub"></div>
-              </div>
-              <span class="pron-badge" style="background:rgba(52,211,153,0.12);color:#34d399;">LGPD ✓</span>
-            </div>
-            <div class="pron-patient">
-              <div class="pron-avatar" style="background:linear-gradient(135deg,rgba(255,0,122,0.2),rgba(0,242,254,0.2));"></div>
-              <div class="pron-info">
-                <div class="pron-name" style="width:62%;"></div>
-                <div class="pron-sub"></div>
-              </div>
-              <span class="pron-badge" style="background:rgba(121,40,202,0.15);color:#c4b5fd;">Sessão #2</span>
-            </div>
-            <div class="pm-grad-bar" style="margin-top:10px;"></div>
-            <!-- stats -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;">
-              <div style="background:rgba(0,242,254,0.06);border:1px solid rgba(0,242,254,0.12);border-radius:8px;padding:6px;text-align:center;">
-                <div style="font-size:14px;font-weight:800;color:var(--cyan);">34</div>
-                <div style="font-size:7px;color:rgba(255,255,255,0.35);margin-top:1px;">pacientes</div>
-              </div>
-              <div style="background:rgba(121,40,202,0.08);border:1px solid rgba(121,40,202,0.2);border-radius:8px;padding:6px;text-align:center;">
-                <div style="font-size:14px;font-weight:800;color:#c4b5fd;">218</div>
-                <div style="font-size:7px;color:rgba(255,255,255,0.35);margin-top:1px;">fotos</div>
-              </div>
-              <div style="background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15);border-radius:8px;padding:6px;text-align:center;">
-                <div style="font-size:14px;font-weight:800;color:#34d399;">31</div>
-                <div style="font-size:7px;color:rgba(255,255,255,0.35);margin-top:1px;">consentes</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div style="display:flex;justify-content:center;">
+        <iframe src="screenshots.html?s=3" class="screen-frame" scrolling="no"></iframe>
       </div>
       <!-- texto -->
       <div class="feat-text-wrap">
@@ -696,52 +580,8 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
         </ul>
       </div>
       <!-- mock: agenda -->
-      <div>
-        <div class="phone-mock">
-          <div class="pm-notch"><div class="pm-notch-pill"></div></div>
-          <div class="pm-body">
-            <div class="pm-topbar">
-              <span class="pm-topbar-title">Agenda</span>
-              <span class="pm-topbar-badge" style="background:rgba(0,242,254,0.1);color:var(--cyan);">Mai 2025</span>
-            </div>
-            <!-- week -->
-            <div class="agenda-week">
-              <div class="ag-day"><div class="ag-day-label">SEG</div><div class="ag-day-num">26</div><div class="ag-day-dot" style="background:rgba(0,242,254,0.4);"></div></div>
-              <div class="ag-day"><div class="ag-day-label">TER</div><div class="ag-day-num">27</div><div class="ag-day-dot" style="background:rgba(121,40,202,0.4);"></div></div>
-              <div class="ag-day"><div class="ag-day-label">QUA</div><div class="ag-day-num">28</div><div class="ag-day-dot" style="background:rgba(0,242,254,0.3);"></div></div>
-              <div class="ag-day"><div class="ag-day-label">QUI</div><div class="ag-day-num today">29</div><div class="ag-day-dot" style="background:rgba(255,255,255,0.3);"></div></div>
-              <div class="ag-day"><div class="ag-day-label">SEX</div><div class="ag-day-num">30</div><div class="ag-day-dot"></div></div>
-              <div class="ag-day"><div class="ag-day-label">SÁB</div><div class="ag-day-num">31</div><div class="ag-day-dot" style="background:rgba(255,0,122,0.3);"></div></div>
-              <div class="ag-day"><div class="ag-day-label">DOM</div><div class="ag-day-num">1</div></div>
-            </div>
-            <div class="pm-grad-bar"></div>
-            <!-- appointments -->
-            <div class="ag-appt" style="background:rgba(0,242,254,0.05);border:1px solid rgba(0,242,254,0.1);border-radius:8px;">
-              <div class="ag-appt-color" style="background:var(--cyan);"></div>
-              <div class="ag-appt-info">
-                <div class="ag-appt-name"></div>
-                <div class="ag-appt-time"></div>
-              </div>
-              <span class="ag-appt-prof" style="background:rgba(0,242,254,0.1);color:var(--cyan);">9h00</span>
-            </div>
-            <div class="ag-appt" style="background:rgba(121,40,202,0.05);border:1px solid rgba(121,40,202,0.15);border-radius:8px;">
-              <div class="ag-appt-color" style="background:var(--violet);"></div>
-              <div class="ag-appt-info">
-                <div class="ag-appt-name"></div>
-                <div class="ag-appt-time"></div>
-              </div>
-              <span class="ag-appt-prof" style="background:rgba(121,40,202,0.12);color:#c4b5fd;">11h30</span>
-            </div>
-            <div class="ag-appt" style="background:rgba(255,0,122,0.04);border:1px solid rgba(255,0,122,0.12);border-radius:8px;">
-              <div class="ag-appt-color" style="background:var(--magenta);"></div>
-              <div class="ag-appt-info">
-                <div class="ag-appt-name"></div>
-                <div class="ag-appt-time"></div>
-              </div>
-              <span class="ag-appt-prof" style="background:rgba(255,0,122,0.1);color:var(--magenta);">14h00</span>
-            </div>
-          </div>
-        </div>
+      <div style="display:flex;justify-content:center;">
+        <iframe src="screenshots.html?s=4" class="screen-frame" scrolling="no"></iframe>
       </div>
     </div>
   </div>

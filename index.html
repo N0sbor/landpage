@@ -3,11 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ZONCLI — Gestão clínica com fotodocumentação profissional. Prontuário, colagem antes/depois, agenda e muito mais para clínicas estéticas e dermatológicas.">
-<meta property="og:title" content="ZONCLI — O Espectro da Evolução">
-<meta property="og:description" content="Fotodocumentação clínica profissional. Gerencie pacientes, sessões e colagens antes/depois com total segurança.">
+
+<!-- Primary SEO -->
+<title>ZONCLI — App de Gestão para Clínicas Estéticas e Dermatológicas</title>
+<meta name="description" content="ZONCLI é o app de gestão clínica com fotodocumentação profissional, colagem antes/depois, agenda com lembretes WhatsApp e prontuário digital. Conformidade LGPD. Grátis para começar.">
+<meta name="keywords" content="app gestão clínica estética, fotodocumentação clínica, prontuário digital, colagem antes depois, agenda médica WhatsApp, LGPD clínica, software clínica dermatológica, app para esteticista">
+<meta name="author" content="ZONCLI">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://zoncli.com.br/">
+
+<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
-<title>ZONCLI — O Espectro da Evolução</title>
+<meta property="og:url" content="https://zoncli.com.br/">
+<meta property="og:title" content="ZONCLI — App de Gestão para Clínicas Estéticas">
+<meta property="og:description" content="Fotodocumentação clínica profissional, colagem antes/depois, agenda com lembretes automáticos via WhatsApp e prontuário digital com conformidade LGPD.">
+<meta property="og:image" content="https://zoncli.com.br/screenshots/splash.jpeg">
+<meta property="og:image:width" content="780">
+<meta property="og:image:height" content="1600">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="ZONCLI">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://zoncli.com.br/">
+<meta name="twitter:title" content="ZONCLI — App de Gestão para Clínicas Estéticas">
+<meta name="twitter:description" content="Fotodocumentação clínica profissional, colagem antes/depois, agenda com WhatsApp e prontuário LGPD.">
+<meta name="twitter:image" content="https://zoncli.com.br/screenshots/splash.jpeg">
+
+<!-- Structured Data: SoftwareApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ZONCLI",
+  "applicationCategory": "MedicalApplication",
+  "operatingSystem": "Android, iOS",
+  "description": "App de gestão clínica com fotodocumentação profissional, colagem antes/depois, agenda integrada com lembretes via WhatsApp e prontuário digital com conformidade LGPD.",
+  "offers": [
+    { "@type": "Offer", "price": "0", "priceCurrency": "BRL", "name": "Free" },
+    { "@type": "Offer", "price": "49.90", "priceCurrency": "BRL", "name": "Starter" },
+    { "@type": "Offer", "price": "129.90", "priceCurrency": "BRL", "name": "Plus" },
+    { "@type": "Offer", "price": "249.90", "priceCurrency": "BRL", "name": "Pro" }
+  ],
+  "url": "https://zoncli.com.br",
+  "inLanguage": "pt-BR",
+  "publisher": {
+    "@type": "Organization",
+    "name": "ZONCLI",
+    "url": "https://zoncli.com.br",
+    "email": "suporte@zoncli.com.br"
+  }
+}
+</script>
+
+<!-- Structured Data: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "O ZONCLI é gratuito?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sim, o plano Free é gratuito para sempre com 50 fotos e 1 profissional. Planos pagos a partir de R$49,90/mês." }
+    },
+    {
+      "@type": "Question",
+      "name": "O ZONCLI está em conformidade com a LGPD?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sim. O ZONCLI possui consentimento digital enviado por WhatsApp, criptografia de dados e controle de acesso em conformidade com a Lei nº 13.709/2018." }
+    },
+    {
+      "@type": "Question",
+      "name": "O ZONCLI funciona em Android e iOS?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sim, o ZONCLI está disponível para Android (Google Play) e iOS (App Store)." }
+    }
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -290,7 +362,7 @@ nav {
 .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 8px; }
 .card-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
 
-/* ── Screen iframes ── */
+/* ── Screen real screenshots ── */
 .screen-frame {
   width: 260px; height: 520px; border: none; border-radius: 28px;
   overflow: hidden; display: block; margin: 0 auto;
@@ -299,10 +371,29 @@ nav {
 @media(max-width:820px){ .screen-frame { width: 220px; height: 440px; } }
 
 /* ── PLANS ── */
-.plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); gap: 14px; margin-top: 52px; align-items: start; }
-.plan-card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 20px; padding: 30px 26px; position: relative; transition: transform .2s; }
+.plans-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 52px; align-items: start; }
+@media(max-width:1024px){ .plans-grid { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width:600px){  .plans-grid { grid-template-columns: 1fr; } }
+.plan-card { background: var(--bg2); border: 1.5px solid var(--border); border-radius: 20px; padding: 30px 26px; position: relative; transition: transform .2s, opacity .2s; }
 .plan-card:hover { transform: translateY(-3px); }
-.plan-card.featured { border-color: rgba(121,40,202,0.5); background: linear-gradient(160deg,rgba(121,40,202,0.07),rgba(255,0,122,0.03)); }
+
+/* Quando o Plus está presente, escurece levemente os outros */
+.plans-grid:has(.featured) .plan-card:not(.featured) { opacity: 0.72; }
+.plans-grid:has(.featured) .plan-card:not(.featured):hover { opacity: 1; }
+
+.plan-card.featured {
+  border-color: rgba(121,40,202,0.7);
+  background: linear-gradient(160deg, rgba(121,40,202,0.10), rgba(255,0,122,0.05));
+  transform: scale(1.04) translateY(-14px);
+  box-shadow:
+    0 0 0 1px rgba(121,40,202,0.4),
+    0 16px 48px rgba(121,40,202,0.35),
+    0 32px 80px rgba(255,0,122,0.15),
+    0 2px 0 rgba(0,242,254,0.12) inset;
+  z-index: 2;
+  opacity: 1 !important;
+}
+.plan-card.featured:hover { transform: scale(1.04) translateY(-18px); }
 .plan-popular { position: absolute; top: 18px; right: 18px; background: var(--grad135); color: #fff; font-size: 9px; font-weight: 700; padding: 3px 10px; border-radius: 100px; letter-spacing: .05em; }
 .plan-dot { width: 10px; height: 10px; border-radius: 50%; margin-bottom: 14px; }
 .plan-name { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 2px; }
@@ -361,12 +452,13 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
 
 /* Z icon */
 .z-logo-svg { display: inline-block; vertical-align: middle; }
+
 </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav>
+<nav aria-label="Navegação principal">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
       <svg class="z-logo-svg" width="26" height="26" viewBox="0 0 100 100" fill="none">
@@ -390,7 +482,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
 </nav>
 
 <!-- ── HERO ── -->
-<section class="hero">
+<section class="hero" aria-label="Apresentação ZONCLI">
   <div class="container">
     <div class="hero-inner">
       <!-- texto -->
@@ -443,7 +535,6 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
               <span class="hp-header-title">COLAGEM</span>
               <span class="hp-header-badge">Concluído</span>
             </div>
-            <!-- layout buttons -->
             <div style="display:flex;gap:4px;margin-bottom:10px;">
               <div style="flex:1;height:20px;border-radius:5px;background:rgba(121,40,202,0.25);border:1px solid rgba(121,40,202,0.4);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#c4b5fd;">1×2</div>
               <div style="flex:1;height:20px;border-radius:5px;background:rgba(255,255,255,0.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:7px;color:rgba(255,255,255,0.3);">2×1</div>
@@ -620,6 +711,11 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
         <div class="card-title">Dashboard da clínica</div>
         <div class="card-desc">Pacientes, sessões, fotos e limite do plano num painel limpo. Saiba exatamente onde sua clínica está.</div>
       </div>
+      <div class="card-feat">
+        <div class="card-icon" style="background:rgba(0,242,254,0.08);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#00F2FE" stroke-width="1.5" stroke-linecap="round"/><path d="M16 2v4M8 2v4M3 10h18" stroke="#00F2FE" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="16" r="1.5" fill="#00F2FE"/><circle cx="12" cy="16" r="1.5" fill="#00F2FE"/><circle cx="16" cy="16" r="1.5" fill="#00F2FE"/></svg></div>
+        <div class="card-title">Agenda dos pacientes</div>
+        <div class="card-desc">Agendamentos por profissional, lembretes automáticos via WhatsApp e visão semanal completa. Zero falta sem aviso.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -629,7 +725,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
   <div class="container">
     <div style="text-align:center;">
       <div class="section-eyebrow" style="color:rgba(0,242,254,0.6);">Planos</div>
-      <h2 class="section-title">Comece grátis.<br><span class="grad-text">Escale quando chegar a hora.</span></h2>
+      <h2 class="section-title">Comece grátis.<br><span class="grad-text">Cresça no seu ritmo.</span></h2>
       <p style="font-size:16px;color:var(--muted);max-width:460px;margin:0 auto;">Câmera clínica, colagem antes/depois, prontuário e agenda disponíveis em todos os planos, desde o grátis.</p>
     </div>
     <div class="plans-grid">
@@ -641,6 +737,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
         <p class="plan-desc">Para conhecer o ZONCLI sem compromisso.</p>
         <div class="plan-divider"></div>
         <ul class="plan-features">
+          <li>10 pacientes</li>
           <li>50 fotos</li>
           <li>1 profissional</li>
           <li>Câmera clínica</li>
@@ -656,6 +753,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
         <p class="plan-desc">Para o profissional autônomo que quer crescer.</p>
         <div class="plan-divider"></div>
         <ul class="plan-features">
+          <li>50 pacientes</li>
           <li>500 fotos</li>
           <li>1 profissional</li>
           <li>Câmera clínica</li>
@@ -673,6 +771,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
         <p class="plan-desc">Para a clínica com equipe e volume real.</p>
         <div class="plan-divider"></div>
         <ul class="plan-features">
+          <li>150 pacientes</li>
           <li>2.500 fotos</li>
           <li>3 profissionais</li>
           <li>Câmera clínica</li>
@@ -690,6 +789,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
         <p class="plan-desc">Para redes e clínicas de alto volume.</p>
         <div class="plan-divider"></div>
         <ul class="plan-features">
+          <li>Pacientes ilimitados</li>
           <li>5.000 fotos</li>
           <li>Profissionais ilimitados</li>
           <li>Câmera clínica</li>
@@ -746,7 +846,7 @@ footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 4
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer aria-label="Rodapé">
   <div class="container">
     <div class="footer-inner">
       <div class="footer-brand">

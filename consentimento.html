@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Consentimento LGPD</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f8fafc;color:#1e293b;min-height:100vh;padding:20px}
+    .wrap{max-width:480px;margin:0 auto;padding:24px 0 48px}
+    .header{text-align:center;margin-bottom:24px}
+    .clinic{font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+    .title{font-size:22px;font-weight:800;color:#0f172a;margin-bottom:6px}
+    .patient{font-size:14px;color:#64748b}
+    .patient strong{color:#1e293b}
+    .box{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;margin:20px 0;max-height:300px;overflow-y:auto}
+    .box p{font-size:13px;color:#475569;line-height:1.75;white-space:pre-wrap}
+    .actions{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+    .btn-ok{background:#10b981;color:#fff;border:none;border-radius:14px;padding:17px;font-size:16px;font-weight:700;width:100%;cursor:pointer;transition:opacity .15s}
+    .btn-ok:disabled{opacity:.6;cursor:default}
+    .btn-no{background:transparent;color:#94a3b8;border:1px solid #e2e8f0;border-radius:14px;padding:14px;font-size:14px;width:100%;cursor:pointer}
+    .note{font-size:12px;color:#94a3b8;text-align:center;margin-top:16px;line-height:1.6}
+    .card{background:#fff;border-radius:20px;padding:44px 28px;text-align:center;max-width:400px;width:100%;margin:40px auto;box-shadow:0 4px 32px rgba(0,0,0,.08)}
+    .icon{font-size:52px;margin-bottom:16px}
+    .card h2{font-size:20px;font-weight:700;margin-bottom:10px}
+    .card p{font-size:14px;color:#64748b;line-height:1.6}
+    .date{font-size:12px;color:#94a3b8;margin-top:14px}
+    .green{color:#10b981}.red{color:#ef4444}.gray{color:#64748b}
+    .loader{display:flex;align-items:center;justify-content:center;min-height:60vh}
+    .spinner{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#10b981;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+  <div id="root"><div class="loader"><div class="spinner"></div></div></div>
+
+  <script>
+    var API = 'https://yltkmebcrznhdswfhssm.supabase.co/functions/v1/lgpd';
+    var token = new URLSearchParams(location.search).get('t');
+    var root  = document.getElementById('root');
+
+    function esc(s) {
+      return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function showError(title, msg) {
+      root.innerHTML = '<div class="card"><div class="icon" style="color:#ef4444">✗</div><h2 class="red">'+esc(title)+'</h2><p>'+esc(msg)+'</p></div>';
+    }
+
+    function showAlready(name, clinic, date) {
+      root.innerHTML = '<div class="card"><div class="icon">✓</div><h2 class="green">Consentimento já confirmado</h2><p>Olá, <strong>'+esc(name)+'</strong>! Seu consentimento LGPD já foi registrado para a <strong>'+esc(clinic)+'</strong>.</p>'+(date?'<p class="date">Confirmado em '+esc(date)+'</p>':'')+'</div>';
+    }
+
+    function showConsent(name, clinic, text) {
+      root.innerHTML =
+        '<div class="wrap">'+
+          '<div class="header">'+
+            '<div class="clinic">'+esc(clinic)+'</div>'+
+            '<div class="title">Consentimento LGPD</div>'+
+            '<div class="patient">Paciente: <strong>'+esc(name)+'</strong></div>'+
+          '</div>'+
+          '<div class="box"><p>'+esc(text)+'</p></div>'+
+          '<div class="actions">'+
+            '<button class="btn-ok" id="btn-ok">Aceitar e confirmar</button>'+
+            '<button class="btn-no" id="btn-no">Não aceitar agora</button>'+
+          '</div>'+
+          '<p class="note">Ao aceitar, registramos sua confirmação com data e hora. Você pode revogar este consentimento a qualquer momento entrando em contato com a clínica.</p>'+
+        '</div>';
+
+      document.getElementById('btn-ok').addEventListener('click', function() {
+        var btn = this;
+        btn.textContent = 'Confirmando...';
+        btn.disabled = true;
+        fetch(API + '?t=' + encodeURIComponent(token), {
+          method: 'POST',
+          headers: {'content-type':'application/json'},
+          body: JSON.stringify({action:'accept'})
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if (d.ok) {
+            root.innerHTML = '<div class="card"><div class="icon">✓</div><h2 class="green">Consentimento confirmado!</h2><p>Obrigado, <strong>'+esc(name)+'</strong>! Seus dados estão protegidos e tratados conforme a LGPD pela <strong>'+esc(clinic)+'</strong>.</p></div>';
+          } else {
+            btn.textContent = 'Aceitar e confirmar';
+            btn.disabled = false;
+          }
+        })
+        .catch(function(){
+          btn.textContent = 'Aceitar e confirmar';
+          btn.disabled = false;
+        });
+      });
+
+      document.getElementById('btn-no').addEventListener('click', function() {
+        root.innerHTML = '<div class="card"><div class="icon" style="color:#64748b">ℹ</div><h2 class="gray">Consentimento não concedido</h2><p>Você pode confirmar seu consentimento a qualquer momento entrando em contato com a clínica.</p></div>';
+      });
+    }
+
+    if (!token) {
+      showError('Link inválido', 'Este link de consentimento não é válido.');
+    } else {
+      fetch(API + '?t=' + encodeURIComponent(token) + '&json=1')
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if (d.error) {
+            showError('Link inválido', 'Este link não é válido ou já expirou.');
+          } else if (d.lgpd_consent) {
+            var date = d.lgpd_date ? new Date(d.lgpd_date).toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'}) : '';
+            showAlready(d.name, d.clinicName, date);
+          } else {
+            showConsent(d.name, d.clinicName, d.consent_text);
+          }
+        })
+        .catch(function(){
+          showError('Erro de conexão', 'Não foi possível carregar o termo. Tente novamente.');
+        });
+    }
+  </script>
+</body>
+</html>

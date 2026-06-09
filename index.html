@@ -524,13 +524,13 @@ nav.scrolled::after {
 /* ─── Feature visuals: 3D isométrico + micro-cards ────────── */
 .feat-visual {
   display: flex; justify-content: center; align-items: center;
-  position: relative; min-height: 340px;
+  position: relative; min-height: 420px;
 }
 
 /* Cena 3D */
 .fv-scene {
   position: relative;
-  width: 300px; height: 300px;
+  width: 320px; height: 400px;
   flex-shrink: 0;
 }
 
@@ -569,21 +569,18 @@ nav.scrolled::after {
   display: flex; align-items: center; justify-content: center;
 }
 
-/* posições dos micro-cards */
-.fv-tl { top: -16px; left: -24px; animation: fvFloat 3.8s ease-in-out 0.0s infinite; }
-.fv-tr { top:  12px; right: -28px; animation: fvFloat 4.2s ease-in-out 0.6s infinite; }
-.fv-br { bottom: -8px; right: -20px; animation: fvFloat 3.6s ease-in-out 1.2s infinite; }
-.fv-bl { bottom: 24px; left: -28px; animation: fvFloat 4.6s ease-in-out 0.9s infinite; }
-.fv-ml { top: 50%; left: -32px; transform: translateY(-50%); animation: fvFloat 4.0s ease-in-out 1.8s infinite; }
+/* posições dos micro-cards — ACIMA e ABAIXO do painel, sem sobreposição */
+.fv-tl { top: 8px;  left: 0px;  animation: fvFloat 3.8s ease-in-out 0.0s infinite; }
+.fv-tr { top: 8px;  right: 0px; animation: fvFloat 4.2s ease-in-out 0.7s infinite; }
+.fv-bc { bottom: 8px; left: 50%; transform: translateX(-50%); animation: fvFloatB 3.6s ease-in-out 1.4s infinite; }
 
 @keyframes fvFloat {
   0%,100% { transform: translateY(0); }
-  50%     { transform: translateY(-7px); }
+  50%     { transform: translateY(-8px); }
 }
-.fv-ml { animation: fvFloatMid 4.0s ease-in-out 1.8s infinite; }
-@keyframes fvFloatMid {
-  0%,100% { transform: translateY(-50%); }
-  50%     { transform: translateY(calc(-50% - 7px)); }
+@keyframes fvFloatB {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50%     { transform: translateX(-50%) translateY(-8px); }
 }
 
 /* dot de status */
@@ -1157,7 +1154,7 @@ footer {
           <div class="fv-scene">
 
             <!-- painel: viewfinder isométrico -->
-            <div class="fv-panel" style="width:220px;height:220px;top:40px;left:40px;background:#0b0918;">
+            <div class="fv-panel" style="width:220px;height:220px;top:82px;left:50px;background:#0b0918;">
               <svg width="220" height="220" viewBox="0 0 220 220" fill="none">
                 <!-- grade terços -->
                 <line x1="73" y1="0" x2="73" y2="220" stroke="rgba(0,200,255,.12)" stroke-width="1"/>
@@ -1190,7 +1187,7 @@ footer {
             </div>
 
             <!-- micro-card: ângulo -->
-            <div class="fv-card fv-br">
+            <div class="fv-card fv-tr">
               <div class="fv-card-icon" style="background:rgba(0,200,255,.1)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
               </div>
@@ -1198,7 +1195,7 @@ footer {
             </div>
 
             <!-- micro-card: sessão -->
-            <div class="fv-card fv-ml">
+            <div class="fv-card fv-bc">
               <div class="fv-card-icon" style="background:rgba(0,200,255,.1)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
               </div>
@@ -1226,7 +1223,7 @@ footer {
           <div class="fv-scene">
 
             <!-- painel: antes/depois isométrico -->
-            <div class="fv-panel" style="width:240px;height:190px;top:50px;left:30px;background:#0b0918;padding:0;overflow:hidden">
+            <div class="fv-panel" style="width:240px;height:220px;top:82px;left:40px;background:#0b0918;padding:0;overflow:hidden">
               <svg width="240" height="190" viewBox="0 0 240 190" fill="none">
                 <!-- painel esquerdo (antes) -->
                 <rect x="0" y="0" width="118" height="190" fill="rgba(123,95,255,.06)"/>
@@ -1261,7 +1258,7 @@ footer {
             </div>
 
             <!-- micro-card: export -->
-            <div class="fv-card fv-br">
+            <div class="fv-card fv-tr">
               <div class="fv-card-icon" style="background:rgba(123,95,255,.15)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7B5FFF" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               </div>
@@ -1269,7 +1266,7 @@ footer {
             </div>
 
             <!-- micro-card: marca d'água -->
-            <div class="fv-card fv-ml" style="left:auto;right:-32px">
+            <div class="fv-card fv-bc">
               <div class="fv-card-icon" style="background:rgba(255,31,142,.1)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF1F8E" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
               </div>
@@ -1298,7 +1295,7 @@ footer {
           <div class="fv-scene">
 
             <!-- painel: ficha de paciente isométrica -->
-            <div class="fv-panel" style="width:230px;height:210px;top:45px;left:35px;background:#0d0920;">
+            <div class="fv-panel" style="width:230px;height:220px;top:82px;left:45px;background:#0d0920;">
               <svg width="230" height="210" viewBox="0 0 230 210" fill="none">
                 <!-- topo: avatar + nome -->
                 <circle cx="36" cy="40" r="22" fill="url(#pavg)"/>
@@ -1349,13 +1346,13 @@ footer {
             </div>
 
             <!-- micro-card: LGPD -->
-            <div class="fv-card fv-br">
+            <div class="fv-card fv-tr">
               <div class="fv-dot" style="color:#34d399;background:#34d399"></div>
               <div><strong style="color:#34d399">LGPD assinado</strong><span>via WhatsApp</span></div>
             </div>
 
             <!-- micro-card: galeria -->
-            <div class="fv-card fv-ml" style="left:auto;right:-28px">
+            <div class="fv-card fv-bc">
               <div class="fv-card-icon" style="background:rgba(255,31,142,.1)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF1F8E" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
               </div>
@@ -1383,7 +1380,7 @@ footer {
           <div class="fv-scene">
 
             <!-- painel: calendário semanal isométrico -->
-            <div class="fv-panel" style="width:240px;height:200px;top:50px;left:30px;background:#080d18;">
+            <div class="fv-panel" style="width:240px;height:220px;top:82px;left:40px;background:#080d18;">
               <svg width="240" height="200" viewBox="0 0 240 200" fill="none">
                 <!-- header calendário -->
                 <rect width="240" height="30" fill="rgba(0,200,255,.08)"/>
@@ -1426,7 +1423,7 @@ footer {
             </div>
 
             <!-- micro-card: taxa de confirmação -->
-            <div class="fv-card fv-br">
+            <div class="fv-card fv-tr">
               <div class="fv-card-icon" style="background:rgba(0,200,255,.1)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
@@ -1434,7 +1431,7 @@ footer {
             </div>
 
             <!-- micro-card: profissionais -->
-            <div class="fv-card fv-ml" style="left:auto;right:-28px">
+            <div class="fv-card fv-bc">
               <div class="fv-card-icon" style="background:rgba(123,95,255,.15)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7B5FFF" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               </div>

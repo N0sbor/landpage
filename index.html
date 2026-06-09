@@ -317,27 +317,9 @@ nav.scrolled::after {
   overflow: hidden; display: block; object-fit: cover;
 }
 
-/* ─── Badge slots rotativos ──────────────────────────────── */
-.badge-slot {
-  position: absolute; z-index: 3;
-  width: 210px;
-}
-.badge-slot-left  { top: 24px;    left: -220px; }
-.badge-slot-right { bottom: 52px; right: -220px; }
-
-@media (max-width: 1120px) {
-  .badge-slot-left  { left: -180px; }
-  .badge-slot-right { right: -180px; }
-}
-@media (max-width: 1000px) {
-  .badge-slot-left  { left: -150px; }
-  .badge-slot-right { right: -150px; }
-}
-@media (max-width: 900px) {
-  .badge-slot { display: none; }
-}
-
+/* ─── Feature badges flutuantes ao redor do phone ───────── */
 .float-badge {
+  position: absolute; z-index: 3;
   background: rgba(13,9,28,.92);
   border: 1px solid rgba(255,255,255,.1);
   border-radius: var(--radius-md); padding: 10px 14px;
@@ -345,48 +327,41 @@ nav.scrolled::after {
   box-shadow: 0 8px 32px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
   white-space: nowrap;
   backdrop-filter: blur(12px);
+  pointer-events: none;
 }
 
-/* Badges ciclantes: todos sobrepostos no mesmo slot, animam em sequência */
-.fb-cycle {
-  position: absolute; top: 0; left: 0;
-  opacity: 0;
+/* 5 posições fixas ao redor do phone */
+.fb-pos-1 { top: -16px;  left:  -190px; }
+.fb-pos-2 { top:  80px;  right: -190px; }
+.fb-pos-3 { top:  48%;   left:  -200px; transform: translateY(-50%); }
+.fb-pos-4 { bottom: 80px; right: -190px; }
+.fb-pos-5 { bottom: -16px; left: -190px; }
+
+@media (max-width: 1140px) {
+  .fb-pos-1 { left: -160px; }
+  .fb-pos-3 { left: -165px; }
+  .fb-pos-5 { left: -160px; }
+  .fb-pos-2 { right: -160px; }
+  .fb-pos-4 { right: -160px; }
+}
+@media (max-width: 1000px) {
+  .fb-pos-1 { left: -130px; }
+  .fb-pos-3 { left: -135px; }
+  .fb-pos-5 { left: -130px; }
+  .fb-pos-2 { right: -130px; }
+  .fb-pos-4 { right: -130px; }
+}
+@media (max-width: 900px) {
+  .float-badge { display: none; }
 }
 
-/* Slot esquerdo — 7 badges, ciclo total 28s (4s cada) */
-@keyframes fbLeft {
-  0%   { opacity: 0; transform: translateY(6px); }
-  5%   { opacity: 1; transform: translateY(0); }
-  28%  { opacity: 1; transform: translateY(0); }
-  33%  { opacity: 0; transform: translateY(-5px); }
-  100% { opacity: 0; transform: translateY(6px); }
+/* entrada ao trocar */
+@keyframes fbIn {
+  from { opacity: 0; transform: translateY(8px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);   }
 }
-.fb-l1 { animation: fbLeft 28s ease-in-out  0.0s infinite; }
-.fb-l2 { animation: fbLeft 28s ease-in-out  4.0s infinite; }
-.fb-l3 { animation: fbLeft 28s ease-in-out  8.0s infinite; }
-.fb-l4 { animation: fbLeft 28s ease-in-out 12.0s infinite; }
-.fb-l5 { animation: fbLeft 28s ease-in-out 16.0s infinite; }
-.fb-l6 { animation: fbLeft 28s ease-in-out 20.0s infinite; }
-.fb-l7 { animation: fbLeft 28s ease-in-out 24.0s infinite; }
-
-/* Slot direito — 6 badges, ciclo total 24s (4s cada) */
-@keyframes fbRight {
-  0%   { opacity: 0; transform: translateY(-6px); }
-  5%   { opacity: 1; transform: translateY(0); }
-  28%  { opacity: 1; transform: translateY(0); }
-  33%  { opacity: 0; transform: translateY(5px); }
-  100% { opacity: 0; transform: translateY(-6px); }
-}
-.fb-r1 { animation: fbRight 24s ease-in-out  0.0s infinite; }
-.fb-r2 { animation: fbRight 24s ease-in-out  4.0s infinite; }
-.fb-r3 { animation: fbRight 24s ease-in-out  8.0s infinite; }
-.fb-r4 { animation: fbRight 24s ease-in-out 12.0s infinite; }
-.fb-r5 { animation: fbRight 24s ease-in-out 16.0s infinite; }
-.fb-r6 { animation: fbRight 24s ease-in-out 20.0s infinite; }
-
-/* Altura mínima para manter o slot */
-.badge-slot-left  { min-height: 52px; }
-.badge-slot-right { min-height: 52px; }
+.fb-pos-3 { transform: translateY(-50%); }
+.float-badge.fb-entering { animation: fbIn .35s cubic-bezier(.25,.1,.25,1) forwards; }
 
 .badge-icon {
   width: 32px; height: 32px; border-radius: 10px;
@@ -914,80 +889,9 @@ footer {
       <div class="hero-visual hero-visual-anim">
         <div class="phone-glow"></div>
 
-        <!-- Slot esquerdo: 7 badges ciclando -->
-        <div class="badge-slot badge-slot-left">
-
-          <div class="float-badge fb-cycle fb-l1">
-            <div class="badge-icon" style="background:rgba(0,200,255,.12);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#00C8FF">Agenda</strong>
-              <span>Calendário por profissional</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-l2">
-            <div class="badge-icon" style="background:rgba(123,95,255,.15);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7B5FFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#7B5FFF">Controle de pacientes</strong>
-              <span>Histórico completo</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-l3">
-            <div class="badge-icon" style="background:rgba(52,211,153,.1);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l-8 3v7c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#34d399">Consentimento LGPD</strong>
-              <span>Assinatura digital via WhatsApp</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-l4">
-            <div class="badge-icon" style="background:rgba(255,31,142,.12);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF1F8E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#FF1F8E">Portfólio da clínica</strong>
-              <span>Colagens geradas automaticamente</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-l5">
-            <div class="badge-icon" style="background:rgba(0,200,255,.1);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#00C8FF">Gestão de procedimentos</strong>
-              <span>Catálogo vinculado às sessões</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-l6">
-            <div class="badge-icon" style="background:rgba(123,95,255,.15);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7B5FFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#7B5FFF">Pacientes do dia</strong>
-              <span>Visualização rápida da agenda</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-l7">
-            <div class="badge-icon" style="background:rgba(255,31,142,.1);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF1F8E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#FF1F8E">Planos</strong>
-              <span>Free, Starter, Plus, Pro</span>
-            </div>
-          </div>
-
-        </div>
+        <!-- 5 badges em posições fixas, JS troca aleatório -->
+        <div class="float-badge fb-pos-1" id="fb0"></div>
+        <div class="float-badge fb-pos-2" id="fb1"></div>
 
         <!-- Phone principal -->
         <div class="phone-frame">
@@ -995,70 +899,9 @@ footer {
           <img src="screenshots/home.jpeg" class="phone-screen" alt="ZONCLI — tela inicial" loading="eager">
         </div>
 
-        <!-- Slot direito: 6 badges ciclando -->
-        <div class="badge-slot badge-slot-right">
-
-          <div class="float-badge fb-cycle fb-r1">
-            <div class="badge-icon" style="background:rgba(0,200,255,.12);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#00C8FF">Cadastro de especialistas</strong>
-              <span>Perfis individuais</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-r2">
-            <div class="badge-icon" style="background:rgba(123,95,255,.15);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7B5FFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0v2"/><path d="M12 12v4M10 14h4"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#7B5FFF">Gestão de profissionais</strong>
-              <span>Permissões por perfil</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-r3">
-            <div class="badge-icon" style="background:rgba(52,211,153,.1);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#34d399">Lembretes de agenda</strong>
-              <span>WhatsApp automático 24h antes</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-r4">
-            <div class="badge-icon" style="background:rgba(255,31,142,.12);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF1F8E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#FF1F8E">Pacientes recentes</strong>
-              <span>Acesso rápido no dashboard</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-r5">
-            <div class="badge-icon" style="background:rgba(0,200,255,.1);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#00C8FF">Controle de procedimentos</strong>
-              <span>Vinculado a cada sessão</span>
-            </div>
-          </div>
-
-          <div class="float-badge fb-cycle fb-r6">
-            <div class="badge-icon" style="background:rgba(123,95,255,.15);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7B5FFF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            </div>
-            <div class="badge-text">
-              <strong style="color:#7B5FFF">Últimos procedimentos</strong>
-              <span>Histórico em tempo real</span>
-            </div>
-          </div>
-
-        </div>
+        <div class="float-badge fb-pos-3" id="fb2"></div>
+        <div class="float-badge fb-pos-4" id="fb3"></div>
+        <div class="float-badge fb-pos-5" id="fb4"></div>
       </div>
 
     </div>
@@ -1581,6 +1424,55 @@ footer {
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 24);
   }, { passive: true });
+
+  // ── Feature badges rotativos ──────────────────────────────
+  const FEATURES = [
+    { label:'Agenda',                  sub:'Calendário por profissional',      color:'#00C8FF', bg:'rgba(0,200,255,.12)',   icon:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>' },
+    { label:'Controle de pacientes',   sub:'Histórico completo',               color:'#7B5FFF', bg:'rgba(123,95,255,.15)',  icon:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>' },
+    { label:'Cadastro de especialistas',sub:'Perfis individuais',              color:'#00C8FF', bg:'rgba(0,200,255,.12)',   icon:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>' },
+    { label:'Consentimento LGPD',      sub:'Assinatura digital via WhatsApp',  color:'#34d399', bg:'rgba(52,211,153,.1)',   icon:'<path d="M12 2l-8 3v7c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V5l-8-3z"/><path d="M9 12l2 2 4-4"/>' },
+    { label:'Portfólio da clínica',    sub:'Colagens automáticas',             color:'#FF1F8E', bg:'rgba(255,31,142,.12)',  icon:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>' },
+    { label:'Gestão de procedimentos', sub:'Catálogo vinculado às sessões',    color:'#00C8FF', bg:'rgba(0,200,255,.1)',    icon:'<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/>' },
+    { label:'Gestão de profissionais', sub:'Permissões por perfil',            color:'#7B5FFF', bg:'rgba(123,95,255,.15)',  icon:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>' },
+    { label:'Lembretes de agenda',     sub:'WhatsApp automático 24h antes',    color:'#34d399', bg:'rgba(52,211,153,.1)',   icon:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>' },
+    { label:'Pacientes recentes',      sub:'Acesso rápido no dashboard',       color:'#FF1F8E', bg:'rgba(255,31,142,.12)',  icon:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/>' },
+    { label:'Pacientes do dia',        sub:'Visualização rápida da agenda',    color:'#7B5FFF', bg:'rgba(123,95,255,.15)',  icon:'<circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>' },
+    { label:'Planos',                  sub:'Free, Starter, Plus, Pro',         color:'#FF1F8E', bg:'rgba(255,31,142,.1)',   icon:'<rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/>' },
+    { label:'Controle de procedimentos',sub:'Vinculado a cada sessão',         color:'#00C8FF', bg:'rgba(0,200,255,.1)',    icon:'<path d="M9 11l3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>' },
+    { label:'Últimos procedimentos',   sub:'Histórico em tempo real',          color:'#7B5FFF', bg:'rgba(123,95,255,.15)',  icon:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>' },
+  ];
+
+  function renderBadge(el, feat) {
+    el.innerHTML =
+      `<div class="badge-icon" style="background:${feat.bg}">` +
+        `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${feat.color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${feat.icon}</svg>` +
+      `</div>` +
+      `<div class="badge-text">` +
+        `<strong style="color:${feat.color}">${feat.label}</strong>` +
+        `<span>${feat.sub}</span>` +
+      `</div>`;
+    el.classList.remove('fb-entering');
+    void el.offsetWidth; // reflow
+    el.classList.add('fb-entering');
+  }
+
+  function shuffled(arr) {
+    const a = [...arr]; for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a;
+  }
+
+  const slots = [0,1,2,3,4].map(i => document.getElementById('fb'+i));
+  // inicializa com 5 diferentes
+  let pool = shuffled(FEATURES);
+  let used = pool.splice(0,5);
+  slots.forEach((el,i) => renderBadge(el, used[i]));
+
+  // troca 1 badge aleatório a cada 2.8s
+  setInterval(() => {
+    const slotIdx = Math.floor(Math.random() * slots.length);
+    if (!pool.length) pool = shuffled(FEATURES.filter(f => f !== used[slotIdx]));
+    used[slotIdx] = pool.pop();
+    renderBadge(slots[slotIdx], used[slotIdx]);
+  }, 2800);
 
   // Hero entrance — trigger on load
   window.addEventListener('load', () => {

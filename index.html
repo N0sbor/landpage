@@ -682,6 +682,64 @@ details[open] .summary-icon {
 .lgpd-links a:hover { color: #c4b5fd; border-color: rgba(196,181,253,.4); }
 @media (max-width: 640px) { .lgpd-links { margin-left: 0; } }
 
+/* ─── MOTION ─────────────────────────────────────────────── */
+
+/* Hero entrance — fold animation 1 (text stagger) + 2 (phone) */
+.hero-text-anim > * { opacity: 0; transform: translateY(24px); }
+.hero-text-anim.entered > *:nth-child(1) { animation: slideUp .55s cubic-bezier(.25,.1,.25,1) .08s forwards; }
+.hero-text-anim.entered > *:nth-child(2) { animation: slideUp .55s cubic-bezier(.25,.1,.25,1) .20s forwards; }
+.hero-text-anim.entered > *:nth-child(3) { animation: slideUp .55s cubic-bezier(.25,.1,.25,1) .32s forwards; }
+.hero-text-anim.entered > *:nth-child(4) { animation: slideUp .55s cubic-bezier(.25,.1,.25,1) .44s forwards; }
+.hero-text-anim.entered > *:nth-child(5) { animation: slideUp .55s cubic-bezier(.25,.1,.25,1) .52s forwards; }
+
+@keyframes slideUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero phone — fold animation 2 */
+.hero-visual-anim { opacity: 0; transform: translateX(32px); }
+.hero-visual-anim.entered { animation: slideLeft .65s cubic-bezier(.25,.1,.25,1) .24s forwards; }
+@keyframes slideLeft {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* CTA btn glow pulse — fold animation 3 */
+@keyframes ctaGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(123,95,255,.3); }
+  50%       { box-shadow: 0 0 36px rgba(255,31,142,.5), 0 0 60px rgba(123,95,255,.2); }
+}
+.hero-cta-glow { animation: ctaGlow 2.8s ease-in-out infinite; }
+
+/* Scroll reveal — 1 per section, once */
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity .45s ease-out, transform .45s ease-out;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+.reveal-left  { opacity: 0; transform: translateX(-36px); transition: opacity .5s ease-out, transform .5s ease-out; }
+.reveal-right { opacity: 0; transform: translateX(36px);  transition: opacity .5s ease-out, transform .5s ease-out; }
+.reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* stagger for grid children */
+.stagger-reveal > * {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .4s ease-out, transform .4s ease-out;
+}
+.stagger-reveal.visible > *:nth-child(1) { transition-delay: .00s; opacity: 1; transform: none; }
+.stagger-reveal.visible > *:nth-child(2) { transition-delay: .08s; opacity: 1; transform: none; }
+.stagger-reveal.visible > *:nth-child(3) { transition-delay: .16s; opacity: 1; transform: none; }
+.stagger-reveal.visible > *:nth-child(4) { transition-delay: .24s; opacity: 1; transform: none; }
+.stagger-reveal.visible > *:nth-child(5) { transition-delay: .32s; opacity: 1; transform: none; }
+.stagger-reveal.visible > *:nth-child(6) { transition-delay: .40s; opacity: 1; transform: none; }
+
+/* respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-text-anim > *, .hero-visual-anim,
+  .reveal, .reveal-left, .reveal-right,
+  .stagger-reveal > * { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
 /* ─── FOOTER ─────────────────────────────────────────────── */
 footer {
   background: var(--surface2);
@@ -760,7 +818,7 @@ footer {
     <div class="hero-inner">
 
       <!-- Texto -->
-      <div>
+      <div class="hero-text-anim">
         <div class="hero-kicker">
           <span class="kicker-dot"></span>
           Para clínicas estéticas e dermatológicas
@@ -777,7 +835,7 @@ footer {
         </p>
 
         <div class="hero-actions">
-          <a href="#download" class="btn btn-primary btn-lg">
+          <a href="#download" class="btn btn-primary btn-lg hero-cta-glow">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 16l-5-5h3V4h4v7h3l-5 5z" fill="#fff"/><path d="M4 18h16v2H4v-2z" fill="#fff"/></svg>
             Baixar grátis
           </a>
@@ -805,7 +863,7 @@ footer {
       </div>
 
       <!-- Visual -->
-      <div class="hero-visual">
+      <div class="hero-visual hero-visual-anim">
         <div class="phone-glow"></div>
 
         <!-- Badge câmera clínica -->
@@ -844,7 +902,7 @@ footer {
 <!-- ═══════════ STATS ═══════════ -->
 <div class="stats">
   <div class="container">
-    <div class="stats-inner">
+    <div class="stats-inner stagger-reveal">
       <div class="stat-item">
         <div class="stat-number">5</div>
         <div class="stat-label">Layouts de colagem</div>
@@ -877,7 +935,7 @@ footer {
     <div class="features-stack" style="padding-bottom:112px;">
 
       <!-- Feature 1: Câmera -->
-      <div class="feat-row" id="camera">
+      <div class="feat-row reveal-left" id="camera">
         <div class="feat-visual">
           <div class="feat-glow" style="background:radial-gradient(circle,rgba(0,200,255,.18) 0%,transparent 65%);"></div>
           <div class="feat-phone">
@@ -899,7 +957,7 @@ footer {
       </div>
 
       <!-- Feature 2: Colagem -->
-      <div class="feat-row rev" id="colagem">
+      <div class="feat-row rev reveal-right" id="colagem">
         <div class="feat-visual">
           <div class="feat-glow" style="background:radial-gradient(circle,rgba(123,92,255,.2) 0%,transparent 65%);"></div>
           <div class="feat-phone">
@@ -922,7 +980,7 @@ footer {
       </div>
 
       <!-- Feature 3: Prontuário -->
-      <div class="feat-row" id="prontuario">
+      <div class="feat-row reveal-left" id="prontuario">
         <div class="feat-visual">
           <div class="feat-glow" style="background:radial-gradient(circle,rgba(255,31,142,.15) 0%,transparent 65%);"></div>
           <div class="feat-phone">
@@ -944,7 +1002,7 @@ footer {
       </div>
 
       <!-- Feature 4: Agenda -->
-      <div class="feat-row rev" id="agenda">
+      <div class="feat-row rev reveal-right" id="agenda">
         <div class="feat-visual">
           <div class="feat-glow" style="background:radial-gradient(circle,rgba(0,200,255,.15) 0%,transparent 65%);"></div>
           <div class="feat-phone">
@@ -977,34 +1035,46 @@ footer {
       <h2>Mais do que uma câmera.<br><span class="grad-text">Uma clínica organizada.</span></h2>
     </div>
 
-    <div class="cards-grid">
+    <div class="cards-grid stagger-reveal">
       <div class="card">
-        <div class="card-icon" style="background:rgba(255,59,130,.1);">⭐</div>
+        <div class="card-icon" style="background:rgba(255,59,130,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF1F8E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
         <h3>Portfólio da clínica</h3>
         <p>Colagens aprovadas formam automaticamente uma galeria para novos pacientes verem os resultados da sua clínica.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:rgba(52,211,153,.1);">🛡️</div>
+        <div class="card-icon" style="background:rgba(52,211,153,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l-8 3v7c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
         <h3>Conformidade LGPD</h3>
         <p>Consentimento digital enviado por WhatsApp. A paciente assina no celular em menos de 1 minuto. Você fica protegido.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:rgba(255,31,142,.12);">👥</div>
+        <div class="card-icon" style="background:rgba(255,31,142,.12);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF1F8E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
         <h3>Toda a equipe no app</h3>
         <p>Cada profissional com seu perfil, agenda e permissões. Controle quem vê e acessa o quê, sem complicação.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:rgba(0,200,255,.1);">📋</div>
+        <div class="card-icon" style="background:rgba(0,200,255,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="12" y2="15"/></svg>
+        </div>
         <h3>Catálogo de procedimentos</h3>
         <p>Vincule procedimentos às sessões e acompanhe o que mais gera atendimento na sua clínica mês a mês.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:rgba(255,59,130,.08);">📊</div>
+        <div class="card-icon" style="background:rgba(255,59,130,.08);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF1F8E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
         <h3>Dashboard da clínica</h3>
         <p>Pacientes, sessões, fotos e uso do plano num painel limpo. Saiba exatamente onde sua clínica está.</p>
       </div>
       <div class="card">
-        <div class="card-icon" style="background:rgba(0,200,255,.08);">☁️</div>
+        <div class="card-icon" style="background:rgba(0,200,255,.08);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+        </div>
         <h3>Backup automático</h3>
         <p>Fotos e dados sempre seguros na nuvem. Acesse de qualquer dispositivo, tudo sincronizado em tempo real.</p>
       </div>
@@ -1020,7 +1090,7 @@ footer {
       <h2>Clínicas que já<br><span class="grad-text">documentam com ZONCLI.</span></h2>
     </div>
 
-    <div class="testimonials-grid">
+    <div class="testimonials-grid stagger-reveal">
       <div class="testimonial">
         <div class="stars">
           <span class="star">★</span><span class="star">★</span><span class="star">★</span>
@@ -1078,7 +1148,7 @@ footer {
       <p>Câmera clínica, colagem antes/depois, prontuário e agenda disponíveis em todos os planos — inclusive no gratuito.</p>
     </div>
 
-    <div class="plans-grid">
+    <div class="plans-grid stagger-reveal">
 
       <!-- Free -->
       <div class="plan">
@@ -1249,7 +1319,9 @@ footer {
 <div class="lgpd">
   <div class="container">
     <div class="lgpd-inner">
-      <div class="lgpd-icon">🛡️</div>
+      <div class="lgpd-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00C8FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l-8 3v7c0 5.5 3.4 10.7 8 12 4.6-1.3 8-6.5 8-12V5l-8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
       <div class="lgpd-body">
         <h4>Privacidade &amp; LGPD</h4>
         <p>Dados de pacientes tratados com conformidade total à Lei nº 13.709/2018. Consentimento digital, criptografia e controle de acesso em cada etapa.</p>
@@ -1347,6 +1419,29 @@ footer {
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 24);
   }, { passive: true });
+
+  // Hero entrance — trigger on load
+  window.addEventListener('load', () => {
+    document.querySelector('.hero-text-anim')?.classList.add('entered');
+    document.querySelector('.hero-visual-anim')?.classList.add('entered');
+  });
+
+  // Scroll reveal — IntersectionObserver
+  const revealSelectors = '.reveal, .reveal-left, .reveal-right';
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '-40px 0px' });
+
+  const staggerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); staggerObserver.unobserve(e.target); }
+    });
+  }, { threshold: 0.08, rootMargin: '-20px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObserver.observe(el));
+  document.querySelectorAll('.stagger-reveal').forEach(el => staggerObserver.observe(el));
 </script>
 
 </body>

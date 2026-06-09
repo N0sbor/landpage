@@ -288,80 +288,74 @@ nav.scrolled::after {
   mask-repeat: no-repeat; mask-position: center;
 }
 
-/* Phone mockup hero */
+/* ─── Feature badges grid no hero visual ─────────────────── */
 .hero-visual {
-  display: flex; justify-content: center; align-items: center;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.phone-frame {
-  width: 260px; border-radius: 40px; overflow: hidden;
-  background: #0a0613;
-  border: 2px solid rgba(255,255,255,.12);
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,.04),
-    0 40px 80px rgba(0,0,0,.7),
-    0 0 120px rgba(123,95,255,.25);
-  position: relative; z-index: 2; flex-shrink: 0;
-}
-.phone-notch-bar {
-  height: 32px; background: #060310;
-  display: flex; align-items: center; justify-content: center;
-}
-.phone-notch {
-  width: 88px; height: 14px; background: #030108;
-  border-radius: 100px;
-}
-.phone-screen {
-  width: 100%; aspect-ratio: 9/16;
-  overflow: hidden; display: block; object-fit: cover;
-}
-
-/* ─── Feature badges flutuantes ao redor do phone ───────── */
-.float-badge {
-  position: absolute; z-index: 3;
-  background: rgba(13,9,28,.92);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: var(--radius-md); padding: 10px 14px;
-  display: flex; align-items: center; gap: 10px;
-  box-shadow: 0 8px 32px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
-  white-space: nowrap;
-  backdrop-filter: blur(12px);
+/* glow ambiente atrás do grid */
+.hero-visual::before {
+  content: '';
+  position: absolute;
+  width: 480px; height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(123,95,255,.2)  0%,
+    rgba(0,200,255,.08) 40%,
+    transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
   pointer-events: none;
+  z-index: 0;
 }
 
-/* 5 posições fixas ao redor do phone */
-.fb-pos-1 { top: -16px;  left:  -190px; }
-.fb-pos-2 { top:  80px;  right: -190px; }
-.fb-pos-3 { top:  48%;   left:  -200px; transform: translateY(-50%); }
-.fb-pos-4 { bottom: 80px; right: -190px; }
-.fb-pos-5 { bottom: -16px; left: -190px; }
+.feat-badges-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  z-index: 1;
+}
 
-@media (max-width: 1140px) {
-  .fb-pos-1 { left: -160px; }
-  .fb-pos-3 { left: -165px; }
-  .fb-pos-5 { left: -160px; }
-  .fb-pos-2 { right: -160px; }
-  .fb-pos-4 { right: -160px; }
+/* stagger de float nos 6 slots para dar vida */
+.feat-badges-grid .float-badge:nth-child(1) { animation: floatBadge 4.2s ease-in-out 0.0s infinite; }
+.feat-badges-grid .float-badge:nth-child(2) { animation: floatBadge 4.2s ease-in-out 0.7s infinite; }
+.feat-badges-grid .float-badge:nth-child(3) { animation: floatBadge 4.2s ease-in-out 1.4s infinite; }
+.feat-badges-grid .float-badge:nth-child(4) { animation: floatBadge 4.2s ease-in-out 2.1s infinite; }
+.feat-badges-grid .float-badge:nth-child(5) { animation: floatBadge 4.2s ease-in-out 2.8s infinite; }
+.feat-badges-grid .float-badge:nth-child(6) { animation: floatBadge 4.2s ease-in-out 3.5s infinite; }
+
+@keyframes floatBadge {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-5px); }
 }
-@media (max-width: 1000px) {
-  .fb-pos-1 { left: -130px; }
-  .fb-pos-3 { left: -135px; }
-  .fb-pos-5 { left: -130px; }
-  .fb-pos-2 { right: -130px; }
-  .fb-pos-4 { right: -130px; }
+
+.float-badge {
+  background: rgba(13,9,28,.88);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius-md); padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.04);
+  backdrop-filter: blur(16px);
+  min-width: 0;
+  transition: border-color .3s, box-shadow .3s;
 }
-@media (max-width: 900px) {
-  .float-badge { display: none; }
+.float-badge:hover {
+  border-color: rgba(123,95,255,.35);
+  box-shadow: 0 12px 40px rgba(0,0,0,.5), 0 0 20px rgba(123,95,255,.12);
 }
 
 /* entrada ao trocar */
 @keyframes fbIn {
-  from { opacity: 0; transform: translateY(8px) scale(.96); }
-  to   { opacity: 1; transform: translateY(0)   scale(1);   }
+  from { opacity: 0; transform: translateY(12px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
 }
-.fb-pos-3 { transform: translateY(-50%); }
-.float-badge.fb-entering { animation: fbIn .35s cubic-bezier(.25,.1,.25,1) forwards; }
+.float-badge.fb-entering { animation: fbIn .4s cubic-bezier(.25,.1,.25,1) forwards; }
 
 .badge-icon {
   width: 32px; height: 32px; border-radius: 10px;
@@ -371,14 +365,6 @@ nav.scrolled::after {
 .badge-text strong { display: block; font-size: 12px; font-weight: 700; line-height: 1.2; }
 .badge-text span { font-size: 10px; color: var(--muted); }
 
-/* Glow atrás do phone */
-.phone-glow {
-  position: absolute; width: 340px; height: 340px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(123,95,255,.35) 0%, transparent 65%);
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
-  z-index: 1;
-}
 
 /* ─── STATS STRIP ────────────────────────────────────────── */
 .stats {
@@ -885,23 +871,16 @@ footer {
         </div>
       </div>
 
-      <!-- Visual -->
+      <!-- Visual: grid de badges flutuantes -->
       <div class="hero-visual hero-visual-anim">
-        <div class="phone-glow"></div>
-
-        <!-- 5 badges em posições fixas, JS troca aleatório -->
-        <div class="float-badge fb-pos-1" id="fb0"></div>
-        <div class="float-badge fb-pos-2" id="fb1"></div>
-
-        <!-- Phone principal -->
-        <div class="phone-frame">
-          <div class="phone-notch-bar"><div class="phone-notch"></div></div>
-          <img src="screenshots/home.jpeg" class="phone-screen" alt="ZONCLI — tela inicial" loading="eager">
+        <div class="feat-badges-grid">
+          <div class="float-badge" id="fb0"></div>
+          <div class="float-badge" id="fb1"></div>
+          <div class="float-badge" id="fb2"></div>
+          <div class="float-badge" id="fb3"></div>
+          <div class="float-badge" id="fb4"></div>
+          <div class="float-badge" id="fb5"></div>
         </div>
-
-        <div class="float-badge fb-pos-3" id="fb2"></div>
-        <div class="float-badge fb-pos-4" id="fb3"></div>
-        <div class="float-badge fb-pos-5" id="fb4"></div>
       </div>
 
     </div>
@@ -1460,10 +1439,10 @@ footer {
     const a = [...arr]; for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a;
   }
 
-  const slots = [0,1,2,3,4].map(i => document.getElementById('fb'+i));
+  const slots = [0,1,2,3,4,5].map(i => document.getElementById('fb'+i));
   // inicializa com 5 diferentes
   let pool = shuffled(FEATURES);
-  let used = pool.splice(0,5);
+  let used = pool.splice(0,6);
   slots.forEach((el,i) => renderBadge(el, used[i]));
 
   // troca 1 badge aleatório a cada 2.8s

@@ -301,8 +301,8 @@ nav.scrolled::after {
 
 .iso-scene {
   position: relative;
-  width: 520px;
-  height: 450px;
+  width: 560px;
+  height: 500px;
   flex-shrink: 0;
 }
 
@@ -311,8 +311,9 @@ nav.scrolled::after {
   content: '';
   position: absolute;
   width: 300px; height: 300px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(123,95,255,.28) 0%, rgba(0,200,255,.1) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(123,95,255,.22) 0%, rgba(0,200,255,.08) 45%, transparent 70%);
   top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 340px; height: 340px;
   pointer-events: none;
 }
 
@@ -376,21 +377,21 @@ nav.scrolled::after {
   padding: 0 4px;
 }
 
-/* 13 tiles em órbita circular — centro 260,225 raio 162px, tile 64×64 */
+/* 13 tiles em órbita circular — centro 280,250 raio 205px, tile 64×64 */
 /* posição = center - 32 */
-.ft-0  { top: 26px;  left: 228px; }   /* 0° topo */
-.ft-1  { top: 45px;  left: 303px; }   /* 27.7° */
-.ft-2  { top: 96px;  left: 361px; }   /* 55.4° */
-.ft-3  { top: 169px; left: 389px; }   /* 83.1° direita-alta */
-.ft-4  { top: 246px; left: 379px; }   /* 110.8° direita-baixa */
-.ft-5  { top: 309px; left: 335px; }   /* 138.5° */
-.ft-6  { top: 345px; left: 266px; }   /* 166.2° */
-.ft-7  { top: 345px; left: 190px; }   /* 193.8° */
-.ft-8  { top: 309px; left: 121px; }   /* 221.5° */
-.ft-9  { top: 246px; left: 77px;  }   /* 249.2° esquerda-baixa */
-.ft-10 { top: 169px; left: 67px;  }   /* 276.9° esquerda-alta */
-.ft-11 { top: 96px;  left: 95px;  }   /* 304.6° */
-.ft-12 { top: 45px;  left: 153px; }   /* 332.3° */
+.ft-0  { top:  13px; left: 248px; }   /* -90° topo */
+.ft-1  { top:  36px; left: 343px; }   /* -62.3° */
+.ft-2  { top: 101px; left: 417px; }   /* -34.6° */
+.ft-3  { top: 193px; left: 452px; }   /* -6.9° direita-alta */
+.ft-4  { top: 291px; left: 439px; }   /* 20.8° direita-baixa */
+.ft-5  { top: 371px; left: 384px; }   /* 48.5° */
+.ft-6  { top: 417px; left: 297px; }   /* 76.2° */
+.ft-7  { top: 417px; left: 199px; }   /* 103.8° */
+.ft-8  { top: 371px; left: 112px; }   /* 131.5° */
+.ft-9  { top: 291px; left:  57px; }   /* 159.2° esquerda-baixa */
+.ft-10 { top: 193px; left:  44px; }   /* 186.9° esquerda-alta */
+.ft-11 { top: 101px; left:  79px; }   /* 214.6° */
+.ft-12 { top:  36px; left: 153px; }   /* 242.3° */
 
 /* animações — cada tile com ritmo único */
 .ft-0  { animation: ftA 3.8s ease-in-out 0.00s infinite; }
@@ -451,11 +452,11 @@ nav.scrolled::after {
 }
 .feat-tile.ft-entering { animation: ftIn .38s cubic-bezier(.25,.1,.25,1) forwards; }
 
-@media (max-width: 1100px) {
-  .iso-scene { transform: scale(.85); transform-origin: center; }
+@media (max-width: 1160px) {
+  .iso-scene { transform: scale(.82); transform-origin: center; }
 }
-@media (max-width: 960px) {
-  .iso-scene { transform: scale(.72); }
+@media (max-width: 1020px) {
+  .iso-scene { transform: scale(.68); }
 }
 @media (max-width: 900px) {
   .iso-scene { display: none; }
@@ -972,7 +973,7 @@ footer {
         <div class="iso-scene">
 
           <!-- linhas SVG conectando tiles ao phone -->
-          <svg class="iso-lines" id="isoLines" viewBox="0 0 520 450" preserveAspectRatio="none"></svg>
+          <svg class="iso-lines" id="isoLines" viewBox="0 0 560 500" preserveAspectRatio="none"></svg>
 
           <!-- phone central -->
           <div class="iso-phone">
@@ -1621,9 +1622,9 @@ footer {
   }
 
   // centros dos 13 tiles no viewBox 520×450 (r=162, centro 260,225)
-  const PHONE_CENTER = [260, 225];
+  const PHONE_CENTER = [280, 250];
   const TILE_CENTERS = (() => {
-    const [cx,cy] = PHONE_CENTER, r = 162, n = 13;
+    const [cx,cy] = PHONE_CENTER, r = 205, n = 13;
     return Array.from({length:n},(_,i)=>{
       const a = (-90 + i*(360/n)) * Math.PI/180;
       return [Math.round(cx + r*Math.cos(a)), Math.round(cy + r*Math.sin(a))];

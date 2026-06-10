@@ -2,50 +2,272 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ficha de Anamnese — ZONCLI</title>
+<link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { height: 100%; background: #0D1117; overflow: hidden; }
-#frame {
-  position: fixed; inset: 0;
-  width: 100%; height: 100%;
-  border: none; background: #0D1117;
-}
-#error {
-  display: none; position: fixed; inset: 0;
-  background: #0D1117; color: #fff;
-  font-family: sans-serif; align-items: center;
-  justify-content: center; flex-direction: column;
-  gap: 12px; padding: 24px; text-align: center;
-}
-#error .brand {
-  font-size: 22px; font-weight: 700;
-  background: linear-gradient(135deg,#00C8FF,#7B5FFF,#FF1F8E);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-}
-#error p { color: #888780; font-size: 14px; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Jura',sans-serif;background:#0D1117;color:#fff;min-height:100vh;padding:20px}
+  .wrap{max-width:480px;margin:0 auto;padding:24px 0 56px}
+  .card{background:#111827;border:1px solid #1E2535;border-radius:12px;padding:20px;margin-bottom:16px}
+  .brand{background:linear-gradient(135deg,#00C8FF,#7B5FFF,#FF1F8E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:22px;font-weight:700;margin-bottom:6px}
+  .muted{color:#888780;font-size:13px;line-height:1.5}
+  h1{font-size:20px;font-weight:700;margin-bottom:4px}
+  .section-title{font-size:11px;font-weight:600;color:#888780;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+  .question{margin-bottom:22px}
+  .question label{display:block;font-size:15px;font-weight:500;margin-bottom:10px;line-height:1.4}
+  .radio-row{display:flex;gap:10px}
+  .radio-btn{flex:1;padding:12px;background:#1E2535;border:2px solid #1E2535;border-radius:8px;text-align:center;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s;user-select:none}
+  .radio-btn.selected{border-color:#7B5FFF;background:rgba(123,95,255,.15);color:#7B5FFF}
+  .checkbox-option{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#1E2535;border:2px solid #1E2535;border-radius:8px;margin-bottom:8px;cursor:pointer;font-size:14px;user-select:none;transition:all .15s}
+  .checkbox-option.selected{border-color:#7B5FFF;background:rgba(123,95,255,.12)}
+  .checkbox-box{width:20px;height:20px;border:2px solid #888780;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+  .checkbox-option.selected .checkbox-box{border-color:#7B5FFF;background:#7B5FFF}
+  input[type=text],textarea{width:100%;background:#1E2535;border:1px solid #2D3748;border-radius:8px;padding:12px;color:#fff;font-size:14px;font-family:inherit;outline:none;margin-top:8px}
+  input[type=text]:focus,textarea:focus{border-color:#7B5FFF}
+  .follow-up{display:none}
+  .follow-up.show{display:block}
+  .name-field{margin-bottom:16px}
+  .name-field label{display:block;font-size:13px;color:#888780;margin-bottom:4px}
+  .declaration{display:flex;align-items:flex-start;gap:12px;padding:14px;background:#1E2535;border:2px solid transparent;border-radius:8px;margin-bottom:16px;cursor:pointer;user-select:none;transition:border-color .15s}
+  .declaration.checked{border-color:#00C8FF}
+  .decl-box{width:22px;height:22px;border:2px solid #888780;border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;transition:all .15s}
+  .declaration.checked .decl-box{border-color:#00C8FF;background:#00C8FF}
+  .decl-text{font-size:13px;color:#888780;line-height:1.5}
+  .btn{width:100%;padding:16px;border-radius:8px;font-size:16px;font-weight:700;border:none;cursor:pointer;background:linear-gradient(135deg,#00C8FF,#7B5FFF,#FF1F8E);color:#fff;font-family:inherit;transition:opacity .15s}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .error-banner{background:rgba(255,31,142,.12);border:1px solid #FF1F8E;border-radius:8px;padding:12px;color:#FF1F8E;font-size:13px;margin-bottom:14px;display:none}
+  .alert-dot{color:#FF1F8E;font-size:12px}
+  canvas{border:1px solid #1E2535;border-radius:8px;width:100%;touch-action:none;background:#0D1117;display:block}
+  .clear-sig{background:none;border:none;color:#888780;font-size:12px;cursor:pointer;margin-top:6px;font-family:inherit}
+  .status-card{text-align:center;padding:40px 20px}
+  .status-icon{font-size:52px;margin-bottom:16px}
+  .disclaimer{font-size:11px;color:#4a5568;text-align:center;margin-top:24px;line-height:1.6}
+  .loader{display:flex;align-items:center;justify-content:center;min-height:60vh}
+  .spinner{width:36px;height:36px;border:3px solid #1E2535;border-top-color:#7B5FFF;border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
-<iframe id="frame"></iframe>
-<div id="error">
-  <div class="brand">ZONCLI</div>
-  <p>Token inválido ou ausente.<br>Solicite um novo link à sua clínica.</p>
-</div>
+<div id="root"><div class="loader"><div class="spinner"></div></div></div>
+
 <script>
-const token = new URLSearchParams(location.search).get('token');
-if (!token) {
-  document.getElementById('frame').style.display = 'none';
-  document.getElementById('error').style.display = 'flex';
+var API   = 'https://yltkmebcrznhdswfhssm.supabase.co/functions/v1/anamnesis-public';
+var token = new URLSearchParams(location.search).get('token');
+var root  = document.getElementById('root');
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function showError(title, msg){
+  root.innerHTML =
+    '<div class="wrap"><div class="card status-card">'+
+      '<p class="brand">ZONCLI</p>'+
+      '<div class="status-icon" style="color:#FF1F8E">✗</div>'+
+      '<h1 style="margin-bottom:8px">'+esc(title)+'</h1>'+
+      '<p class="muted">'+esc(msg)+'</p>'+
+    '</div></div>';
+}
+
+function showStatus(icon, title, msg){
+  root.innerHTML =
+    '<div class="wrap"><div class="card status-card">'+
+      '<p class="brand">ZONCLI</p>'+
+      '<div class="status-icon">'+icon+'</div>'+
+      '<h1 style="margin-bottom:8px">'+esc(title)+'</h1>'+
+      '<p class="muted">'+esc(msg)+'</p>'+
+    '</div></div>';
+}
+
+function renderForm(data){
+  var firstName = (data.patient||'Paciente').split(' ')[0];
+  var questions = data.questions||[];
+  var isAssisted = data.assisted;
+  var answers   = {};
+  var declared  = false;
+  var sigCanvas, sigCtx, drawing = false;
+
+  var html =
+    '<div class="wrap">'+
+    '<div class="card">'+
+      '<p class="brand">ZONCLI</p>'+
+      '<h1>Ficha de Anamnese</h1>'+
+      '<p class="muted" style="margin-bottom:4px">'+esc(data.clinic)+' · Olá, '+esc(firstName)+'!</p>'+
+      '<p class="muted">Preencha com atenção. Suas respostas ficam registradas no prontuário clínico.</p>'+
+    '</div>'+
+    '<div class="card" id="form-card">'+
+      '<p class="section-title">Questionário de saúde</p>'+
+      '<div id="q-container"></div>'+
+      '<div class="name-field">'+
+        '<label>Seu nome completo</label>'+
+        '<input type="text" id="full-name" placeholder="Nome completo" autocomplete="name">'+
+      '</div>'+
+      (isAssisted ?
+        '<div class="question">'+
+          '<label style="font-size:13px;color:#888780">Assinatura do paciente</label>'+
+          '<canvas id="sig-canvas" height="160"></canvas>'+
+          '<button class="clear-sig" id="clear-sig-btn">Limpar assinatura</button>'+
+        '</div>'
+      : '')+
+      '<div class="declaration" id="decl">'+
+        '<div class="decl-box" id="decl-box"></div>'+
+        '<span class="decl-text">Declaro que li e que as informações fornecidas são verdadeiras e completas, em conformidade com meu estado de saúde atual.</span>'+
+      '</div>'+
+      '<div class="error-banner" id="error-msg"></div>'+
+      '<button class="btn" id="submit-btn" disabled>Enviar ficha de anamnese</button>'+
+    '</div>'+
+    '<p class="disclaimer">Questionário base ZONCLI — revisado e adaptado sob responsabilidade do responsável técnico da clínica.</p>'+
+    '</div>';
+
+  root.innerHTML = html;
+
+  // Renderizar perguntas
+  var container = document.getElementById('q-container');
+  questions.forEach(function(q){
+    var div = document.createElement('div');
+    div.className = 'question';
+    div.innerHTML = '<label>'+esc(q.label)+(q.alert?' <span class="alert-dot">●</span>':'')+'</label>';
+
+    if(q.type === 'boolean'){
+      var row = document.createElement('div'); row.className = 'radio-row';
+      var btnYes = document.createElement('div'); btnYes.className = 'radio-btn'; btnYes.textContent = 'Sim';
+      var btnNo  = document.createElement('div'); btnNo.className  = 'radio-btn'; btnNo.textContent  = 'Não';
+      btnYes.onclick = function(){ answers[q.id]=true;  btnYes.classList.add('selected'); btnNo.classList.remove('selected'); if(fu) fu.classList.add('show'); checkSubmit(); };
+      btnNo.onclick  = function(){ answers[q.id]=false; btnNo.classList.add('selected');  btnYes.classList.remove('selected'); if(fu) fu.classList.remove('show'); checkSubmit(); };
+      row.appendChild(btnYes); row.appendChild(btnNo); div.appendChild(row);
+      var fu = null;
+      if(q.follow_up){
+        fu = document.createElement('div'); fu.className='follow-up';
+        var inp = document.createElement('input'); inp.type='text'; inp.placeholder=q.follow_up.label; inp.id='fu-'+q.id;
+        fu.appendChild(inp); div.appendChild(fu);
+      }
+
+    } else if(q.type === 'multi'){
+      (q.options||[]).forEach(function(opt){
+        var row2 = document.createElement('div'); row2.className = 'checkbox-option';
+        var box  = document.createElement('div'); box.className  = 'checkbox-box';
+        var lbl  = document.createElement('span'); lbl.textContent = opt;
+        row2.appendChild(box); row2.appendChild(lbl);
+        row2.onclick = function(){
+          if(!answers[q.id]) answers[q.id]=[];
+          var idx = answers[q.id].indexOf(opt);
+          if(idx===-1){ answers[q.id].push(opt); row2.classList.add('selected'); box.textContent='✓'; }
+          else { answers[q.id].splice(idx,1); row2.classList.remove('selected'); box.textContent=''; }
+          checkSubmit();
+        };
+        div.appendChild(row2);
+      });
+
+    } else {
+      var ta = document.createElement('textarea'); ta.rows=2; ta.placeholder='Descreva...'; ta.id='txt-'+q.id;
+      ta.oninput = checkSubmit;
+      div.appendChild(ta);
+    }
+
+    container.appendChild(div);
+  });
+
+  // Assinatura (modo assistido)
+  if(isAssisted){
+    sigCanvas = document.getElementById('sig-canvas');
+    sigCtx    = sigCanvas.getContext('2d');
+    sigCanvas.width = sigCanvas.offsetWidth || 440;
+    sigCtx.strokeStyle='#00C8FF'; sigCtx.lineWidth=2; sigCtx.lineCap='round';
+    sigCanvas.addEventListener('mousedown',  function(e){ drawing=true; var p=getPos(e); sigCtx.beginPath(); sigCtx.moveTo(p.x,p.y); }, {passive:false});
+    sigCanvas.addEventListener('touchstart', function(e){ e.preventDefault(); drawing=true; var p=getPos(e); sigCtx.beginPath(); sigCtx.moveTo(p.x,p.y); }, {passive:false});
+    sigCanvas.addEventListener('mousemove',  function(e){ if(!drawing) return; var p=getPos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); });
+    sigCanvas.addEventListener('touchmove',  function(e){ e.preventDefault(); if(!drawing) return; var p=getPos(e); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); }, {passive:false});
+    sigCanvas.addEventListener('mouseup',    function(){ drawing=false; });
+    sigCanvas.addEventListener('touchend',   function(){ drawing=false; });
+    document.getElementById('clear-sig-btn').onclick = function(){ sigCtx.clearRect(0,0,sigCanvas.width,sigCanvas.height); };
+    function getPos(e){ var r=sigCanvas.getBoundingClientRect(); var t=e.touches?e.touches[0]:e; return {x:t.clientX-r.left, y:t.clientY-r.top}; }
+  }
+
+  // Declaração
+  document.getElementById('decl').onclick = function(){
+    declared = !declared;
+    var decl = document.getElementById('decl');
+    var box  = document.getElementById('decl-box');
+    decl.classList.toggle('checked', declared);
+    box.textContent = declared ? '✓' : '';
+    checkSubmit();
+  };
+
+  // Campo nome
+  document.getElementById('full-name').addEventListener('input', checkSubmit);
+
+  function checkSubmit(){
+    var ok = declared && document.getElementById('full-name').value.trim().length > 2;
+    document.getElementById('submit-btn').disabled = !ok;
+  }
+
+  // Envio
+  document.getElementById('submit-btn').onclick = function(){
+    var btn = document.getElementById('submit-btn');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+
+    // Coletar textos e follow-ups
+    questions.forEach(function(q){
+      if(q.type==='text'){ var v=document.getElementById('txt-'+q.id); if(v) answers[q.id]=v.value||null; }
+      if(q.follow_up && answers[q.id]===true){ var v=document.getElementById('fu-'+q.id); if(v) answers[q.id+'_follow_up']=v.value||null; }
+    });
+
+    var payload = { answers: answers, full_name: document.getElementById('full-name').value.trim() };
+
+    // Assinatura
+    if(isAssisted){
+      var empty = !sigCanvas.getContext('2d').getImageData(0,0,sigCanvas.width,sigCanvas.height).data.some(function(v){ return v!==0; });
+      if(empty){
+        var err = document.getElementById('error-msg');
+        err.style.display='block'; err.textContent='Assinatura obrigatória. Peça ao paciente para assinar.';
+        btn.disabled=false; btn.textContent='Enviar ficha de anamnese'; return;
+      }
+      payload.signature_base64 = sigCanvas.toDataURL('image/png');
+    }
+
+    fetch(API+'?token='+encodeURIComponent(token), {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d.ok){
+        var name = document.getElementById('full-name').value.split(' ')[0];
+        document.getElementById('form-card').innerHTML =
+          '<div class="status-card">'+
+            '<div class="status-icon">✅</div>'+
+            '<h1 style="margin-bottom:8px">Ficha enviada!</h1>'+
+            '<p class="muted">Obrigado, '+esc(name)+'! A equipe clínica irá revisar suas respostas.</p>'+
+          '</div>';
+      } else {
+        var err = document.getElementById('error-msg');
+        err.style.display='block'; err.textContent='Erro ao enviar. Tente novamente.';
+        btn.disabled=false; btn.textContent='Enviar ficha de anamnese';
+      }
+    })
+    .catch(function(){
+      var err = document.getElementById('error-msg');
+      err.style.display='block'; err.textContent='Erro de conexão. Verifique sua internet e tente novamente.';
+      btn.disabled=false; btn.textContent='Enviar ficha de anamnese';
+    });
+  };
+}
+
+// ── Inicialização ──────────────────────────────────────
+if(!token){
+  showError('Link inválido', 'Este link não é válido. Solicite um novo link à sua clínica.');
 } else {
-  const params = new URLSearchParams(location.search);
-  params.delete('token');
-  const extra = params.toString() ? '&' + params.toString() : '';
-  document.getElementById('frame').src =
-    'https://yltkmebcrznhdswfhssm.supabase.co/functions/v1/anamnesis-public?token=' +
-    encodeURIComponent(token) + extra;
+  fetch(API+'?token='+encodeURIComponent(token)+'&json=1')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d.error){ showError('Link inválido', 'Este link não é válido ou já expirou. Solicite um novo link à sua clínica.'); return; }
+      var s = d.status;
+      if(s==='validated'){ showStatus('✅','Anamnese já validada','Sua ficha foi revisada e validada pela equipe clínica. Obrigado!'); return; }
+      if(s==='submitted'){ showStatus('⏳','Aguardando revisão','Recebemos suas respostas. A equipe clínica irá revisar em breve.'); return; }
+      if(s==='expired'){   showStatus('⏰','Link expirado','Este link expirou. Solicite um novo link à sua clínica.'); return; }
+      renderForm(d);
+    })
+    .catch(function(){ showError('Erro de conexão','Não foi possível carregar o formulário. Verifique sua internet e tente novamente.'); });
 }
 </script>
 </body>

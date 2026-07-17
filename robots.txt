@@ -1,4 +1,5 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 
-Sitemap: https://n0sbor.github.io/landpage/sitemap.xml
+Sitemap: https://zoncli.com.br/sitemap.xml
+

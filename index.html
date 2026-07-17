@@ -929,6 +929,11 @@ footer {
   text-decoration: none; transition: color .2s;
 }
 .footer-bottom-links a:hover { color: rgba(255,255,255,.5); }
+
+.stats-community { border-top: 1px solid rgba(255,255,255,.06); }
+.stats-community-header { text-align: center; margin-bottom: .5rem; }
+.stats-community-header h2 { font-size: clamp(1.4rem,3vw,2rem); margin: .4rem 0 .5rem; }
+.stats-community-header p  { color: var(--muted); font-size: .95rem; }
 </style>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
@@ -1138,6 +1143,32 @@ footer {
       <div class="stat-item">
         <div class="stat-number">∞</div>
         <div class="stat-label">Fotos no plano Clínica</div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ═══════════ STATS COMUNIDADE ═══════════ -->
+<div class="stats stats-community reveal">
+  <div class="container">
+    <div class="stats-community-header">
+      <span class="eyebrow"><span class="eyebrow-line"></span>Comunidade</span>
+      <h2>Crescendo junto com as clínicas</h2>
+      <p>Números reais, atualizados em tempo real.</p>
+    </div>
+    <div class="stats-inner stagger-reveal" style="margin-top:2rem;">
+      <div class="stat-item">
+        <div class="stat-number" id="stat-clinics">—</div>
+        <div class="stat-label">Clínicas cadastradas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-patients">—</div>
+        <div class="stat-label">Pacientes registrados</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" id="stat-professionals">—</div>
+        <div class="stat-label">Profissionais ativos</div>
       </div>
     </div>
   </div>
@@ -1998,6 +2029,61 @@ footer {
   document.querySelectorAll('.stagger-reveal').forEach(el => staggerObserver.observe(el));
 
   lucide.createIcons();
+
+  // ── Stats comunidade (Supabase RPC) ────────────────────────────────────────
+  (function () {
+    const SUPA_URL  = 'https://yltkmebcrznhdswfhssm.supabase.co';
+    const SUPA_ANON = 'sb_publishable_VY3prJ6hS4XMk9wan9hX-w_psOZU-nz';
+
+    function animateCount(el, target) {
+      const start = 0;
+      const steps = Math.min(target, 60);
+      const inc   = target / steps;
+      let cur = 0, step = 0;
+      const tick = setInterval(function () {
+        step++;
+        cur = Math.round(inc * step);
+        el.textContent = cur >= 1000
+          ? (cur / 1000).toFixed(1).replace('.', ',') + 'k'
+          : cur.toString();
+        if (step >= steps) { el.textContent = target >= 1000
+          ? (target / 1000).toFixed(1).replace('.', ',') + 'k'
+          : target.toString(); clearInterval(tick); }
+      }, 30);
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch(SUPA_URL + '/rest/v1/rpc/get_public_stats', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPA_ANON,
+            'Authorization': 'Bearer ' + SUPA_ANON,
+            'Content-Type': 'application/json',
+          },
+          body: '{}',
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const elC = document.getElementById('stat-clinics');
+        const elP = document.getElementById('stat-patients');
+        const elPr = document.getElementById('stat-professionals');
+        if (elC)  animateCount(elC,  data.clinics       || 0);
+        if (elP)  animateCount(elP,  data.patients      || 0);
+        if (elPr) animateCount(elPr, data.professionals || 0);
+      } catch (e) { /* silencia erros de rede */ }
+    }
+
+    // Carrega quando a seção entrar na viewport
+    const section = document.querySelector('.stats-community');
+    if (section) {
+      new IntersectionObserver(function (entries, obs) {
+        if (!entries[0].isIntersecting) return;
+        obs.disconnect();
+        loadStats();
+      }, { threshold: 0.2 }).observe(section);
+    }
+  })();
 
   // ── Contador de downloads persistente ──────────────────────────────────────
   (function () {

@@ -1120,6 +1120,10 @@ footer {
   <div class="container">
     <div class="stats-inner stagger-reveal">
       <div class="stat-item">
+        <div class="stat-number" id="download-counter">1</div>
+        <div class="stat-label">Downloads</div>
+      </div>
+      <div class="stat-item">
         <div class="stat-number">5</div>
         <div class="stat-label">Layouts de colagem</div>
       </div>
@@ -1994,6 +1998,56 @@ footer {
   document.querySelectorAll('.stagger-reveal').forEach(el => staggerObserver.observe(el));
 
   lucide.createIcons();
+
+  // ── Contador de downloads persistente ──────────────────────────────────────
+  (function () {
+    const KEY_START = 'zoncli_counter_start';
+    const INTERVAL  = 3000;   // ms entre cada incremento
+    const MAX       = 1000;
+    const el        = document.getElementById('download-counter');
+    if (!el) return;
+
+    // Inicializa timestamp na primeira visita
+    if (!localStorage.getItem(KEY_START)) {
+      localStorage.setItem(KEY_START, Date.now().toString());
+    }
+
+    function getCurrent() {
+      const elapsed = Date.now() - parseInt(localStorage.getItem(KEY_START));
+      return Math.min(1 + Math.floor(elapsed / INTERVAL), MAX);
+    }
+
+    function formatNum(n) {
+      return n >= 1000 ? '1.000+' : n.toString();
+    }
+
+    // Anima count-up suave do valor anterior ao atual ao entrar na viewport
+    let animated = false;
+    const observer = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting || animated) return;
+      animated = true;
+      const target = getCurrent();
+      const start  = Math.max(1, target - 20);
+      const steps  = target - start;
+      let step = 0;
+      const tick = setInterval(function () {
+        step++;
+        el.textContent = formatNum(start + step);
+        if (step >= steps) clearInterval(tick);
+      }, 40);
+    }, { threshold: 0.3 });
+    observer.observe(el);
+
+    // Atualiza o número a cada 3s enquanto a página está aberta
+    setInterval(function () {
+      const cur = getCurrent();
+      el.textContent = formatNum(cur);
+      if (cur >= MAX) el.textContent = '1.000+';
+    }, INTERVAL);
+
+    // Valor inicial antes da animação
+    el.textContent = formatNum(getCurrent());
+  })();
 </script>
 
 </body>

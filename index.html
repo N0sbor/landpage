@@ -909,14 +909,17 @@ details[open] .summary-icon {
 
 .store-badge-link {
   display: inline-block;
-  border-radius: 10px;
-  overflow: hidden;
   text-decoration: none;
-  transition: transform .2s ease, box-shadow .2s ease;
+  transition: transform .2s ease, filter .2s ease;
+}
+.store-badge-link img {
+  height: 72px;
+  width: auto;
+  display: block;
 }
 .store-badge-link:hover {
   transform: translateY(-3px);
-  box-shadow: 0 14px 36px rgba(0,0,0,.5);
+  filter: brightness(1.1);
 }
 .store-badge-soon {
   display: inline-block;
@@ -1923,18 +1926,14 @@ footer {
       <!-- Linha dos badges -->
       <div class="store-row">
 
-        <!-- Google Play Badge -->
+        <!-- Google Play Badge oficial -->
         <a href="https://play.google.com/store/apps/details?id=com.zoncli.app&hl=pt_BR" class="store-badge-link" aria-label="Disponível no Google Play" target="_blank" rel="noopener noreferrer">
-          <svg width="200" height="60" viewBox="0 0 186 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="186" height="56" rx="10" fill="#000"/>
-            <rect x=".5" y=".5" width="185" height="55" rx="9.5" stroke="white" stroke-opacity=".18" stroke-width="1"/>
-            <path d="M15,14 L24,28 L15,28 Z" fill="#4285F4"/>
-            <path d="M15,28 L24,28 L15,42 Z" fill="#34A853"/>
-            <path d="M15,14 L33,28 L24,28 Z" fill="#FBBC04"/>
-            <path d="M24,28 L33,28 L15,42 Z" fill="#EA4335"/>
-            <text x="43" y="26" fill="rgba(255,255,255,.7)" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="10.5" letter-spacing=".25">Get it on</text>
-            <text x="43" y="43" fill="#fff" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif" font-size="19" font-weight="600" letter-spacing="-.3">Google Play</text>
-          </svg>
+          <img
+            src="https://play.google.com/intl/pt_BR/badges/static/images/badges/pt-br_badge_web_generic.png"
+            alt="Disponível no Google Play"
+            height="72"
+            style="display:block;"
+          />
         </a>
 
         <!-- Apple App Store Badge — Em breve -->

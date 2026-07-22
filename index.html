@@ -920,25 +920,31 @@ details[open] .summary-icon {
   align-items: center;
   gap: 8px;
 }
-.badge-item img {
-  height: 60px;
-  width: auto;
-  display: block;
-}
-.badge-item a {
+.badge-item a,
+.badge-item--soon {
   display: block;
   text-decoration: none;
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 0;
   transition: transform .2s ease, filter .2s ease;
 }
 .badge-item a:hover {
   transform: translateY(-3px);
   filter: brightness(1.1);
 }
+.badge-item img {
+  height: 58px;
+  width: auto;
+  display: block;
+}
 
 /* badge desabilitado (App Store) */
-.badge-item--soon img {
-  opacity: .45;
+.badge-item--soon {
+  opacity: .5;
   filter: grayscale(60%);
+  cursor: not-allowed;
+  pointer-events: none;
 }
 .soon-tag {
   font-family: 'Inter', sans-serif;
@@ -1956,11 +1962,13 @@ footer {
         </div>
 
         <!-- App Store — Em breve -->
-        <div class="badge-item badge-item--soon" title="Em breve na App Store">
-          <img
-            src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/pt-br"
-            alt="Download na App Store"
-          />
+        <div class="badge-item" title="Em breve na App Store">
+          <div class="badge-item--soon">
+            <img
+              src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/pt-br"
+              alt="Download na App Store"
+            />
+          </div>
           <span class="soon-tag">Em breve</span>
         </div>
 

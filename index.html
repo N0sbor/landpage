@@ -921,6 +921,27 @@ details[open] .summary-icon {
   filter: grayscale(60%);
   pointer-events: none;
 }
+.qr-block {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.qr-label {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+.qr-wrap {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px;
+  display: inline-flex;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 12px 40px rgba(0,0,0,.45);
+}
+.qr-wrap canvas { display: block; border-radius: 4px; }
 
 /* ─── LGPD BANNER ────────────────────────────────────────── */
 .lgpd {
@@ -1915,6 +1936,14 @@ footer {
         </svg>
       </div>
 
+      <!-- QR Code -->
+      <div class="qr-block">
+        <p class="qr-label">Aponte a câmera do celular para baixar</p>
+        <div class="qr-wrap">
+          <canvas id="qr-canvas"></canvas>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -2219,6 +2248,16 @@ footer {
     // Valor inicial antes da animação
     el.textContent = formatNum(getCurrent());
   })();
+</script>
+
+<!-- QR Code Generator -->
+<script src="https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script>
+  QRCode.toCanvas(
+    document.getElementById('qr-canvas'),
+    'https://play.google.com/store/apps/details?id=com.zoncli.app&hl=pt_BR',
+    { width: 160, margin: 1, color: { dark: '#111111', light: '#ffffff' } }
+  );
 </script>
 
 </body>

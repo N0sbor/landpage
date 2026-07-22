@@ -905,7 +905,7 @@ details[open] .summary-icon {
   align-items: center;
   gap: 40px;
 }
-.store-row { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
+.store-row { display: flex; justify-content: center; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
 
 .store-badge-link {
   display: inline-block;
@@ -913,7 +913,7 @@ details[open] .summary-icon {
   transition: transform .2s ease, filter .2s ease;
 }
 .store-badge-link img {
-  height: 72px;
+  height: 52px;
   width: auto;
   display: block;
 }
@@ -922,35 +922,33 @@ details[open] .summary-icon {
   filter: brightness(1.1);
 }
 .store-badge-soon {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   cursor: not-allowed;
   opacity: .5;
   filter: grayscale(55%);
   pointer-events: none;
 }
 .apple-soon-wrap {
-  position: relative;
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 .apple-soon-wrap img {
-  height: 72px;
+  height: 52px;
   width: auto;
   display: block;
 }
 .soon-tag {
-  position: absolute;
-  bottom: 7px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,.65);
-  color: rgba(255,255,255,.8);
   font-family: 'Inter', sans-serif;
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 4px;
+  color: rgba(255,255,255,.6);
   white-space: nowrap;
 }
 .qr-block {

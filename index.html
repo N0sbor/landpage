@@ -961,16 +961,17 @@ details[open] .summary-icon {
   align-items: center;
   gap: 14px;
 }
-.qr-pair {
+.store-qr-row {
   display: flex;
-  gap: 20px;
+  gap: 48px;
   align-items: flex-start;
+  justify-content: center;
 }
-.qr-item {
+.store-qr-col {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
 }
 .qr-label {
   font-family: 'Inter', sans-serif;
@@ -1958,54 +1959,45 @@ footer {
     <!-- Coluna central: badges + QR -->
     <div class="download-col">
 
-      <!-- Linha dos badges -->
-      <div class="store-row">
+      <!-- Badges + QR alinhados por loja -->
+      <div class="store-qr-row">
 
         <!-- Google Play -->
-        <div class="badge-item">
+        <div class="store-qr-col">
           <a href="https://play.google.com/store/apps/details?id=com.zoncli.app&hl=pt_BR"
              aria-label="Disponível no Google Play"
-             target="_blank" rel="noopener noreferrer">
+             target="_blank" rel="noopener noreferrer"
+             class="badge-item">
             <img
               src="https://play.google.com/intl/pt_BR/badges/static/images/badges/pt-br_badge_web_generic.png"
               alt="Disponível no Google Play"
             />
           </a>
+          <div class="qr-wrap">
+            <div id="qr-android"></div>
+          </div>
         </div>
 
         <!-- App Store -->
-        <a
-          class="badge-item"
-          href="https://apps.apple.com/br/app/zoncli/id6800926360"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Download na App Store"
-        >
-          <img
-            src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/pt-br"
-            alt="Download na App Store"
-          />
-        </a>
-
-      </div><!-- /store-row -->
-
-      <!-- QR Codes -->
-      <div class="qr-block">
-        <div class="qr-pair">
-          <div class="qr-item">
-            <div class="qr-wrap">
-              <div id="qr-android"></div>
-            </div>
-            <p class="qr-sublabel">Google Play</p>
-          </div>
-          <div class="qr-item">
-            <div class="qr-wrap">
-              <div id="qr-ios"></div>
-            </div>
-            <p class="qr-sublabel">App Store</p>
+        <div class="store-qr-col">
+          <a
+            class="badge-item"
+            href="https://apps.apple.com/br/app/zoncli/id6800926360"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download na App Store"
+          >
+            <img
+              src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/pt-br"
+              alt="Download na App Store"
+            />
+          </a>
+          <div class="qr-wrap">
+            <div id="qr-ios"></div>
           </div>
         </div>
-      </div>
+
+      </div><!-- /store-qr-row -->
 
     </div><!-- /download-col -->
 

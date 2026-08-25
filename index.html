@@ -961,6 +961,17 @@ details[open] .summary-icon {
   align-items: center;
   gap: 14px;
 }
+.qr-pair {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.qr-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
 .qr-label {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
@@ -1978,12 +1989,22 @@ footer {
 
       </div><!-- /store-row -->
 
-      <!-- QR Code -->
+      <!-- QR Codes -->
       <div class="qr-block">
-        <div class="qr-wrap">
-          <div id="qr-canvas"></div>
+        <div class="qr-pair">
+          <div class="qr-item">
+            <div class="qr-wrap">
+              <div id="qr-android"></div>
+            </div>
+            <p class="qr-sublabel">Google Play</p>
+          </div>
+          <div class="qr-item">
+            <div class="qr-wrap">
+              <div id="qr-ios"></div>
+            </div>
+            <p class="qr-sublabel">App Store</p>
+          </div>
         </div>
-        <p class="qr-sublabel">Google Play · App Store</p>
       </div>
 
     </div><!-- /download-col -->
@@ -2297,16 +2318,12 @@ footer {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" crossorigin="anonymous"></script>
 <script>
   (function () {
-    var el = document.getElementById('qr-canvas');
-    if (!el || typeof QRCode === 'undefined') return;
-    new QRCode(el, {
-      text: 'https://play.google.com/store/apps/details?id=com.zoncli.app&hl=pt_BR',
-      width: 160,
-      height: 160,
-      colorDark: '#111111',
-      colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M
-    });
+    if (typeof QRCode === 'undefined') return;
+    var opts = { width: 130, height: 130, colorDark: '#111111', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M };
+    var android = document.getElementById('qr-android');
+    if (android) new QRCode(android, Object.assign({}, opts, { text: 'https://play.google.com/store/apps/details?id=com.zoncli.app&hl=pt_BR' }));
+    var ios = document.getElementById('qr-ios');
+    if (ios) new QRCode(ios, Object.assign({}, opts, { text: 'https://apps.apple.com/br/app/zoncli/id6800926360' }));
   })();
 </script>
 

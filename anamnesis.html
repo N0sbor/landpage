@@ -123,7 +123,10 @@ function renderForm(data){
   // Pré-preencher nome do paciente a partir do cadastro
   if(data.patient){
     var nameInput = document.getElementById('full-name');
-    if(nameInput) nameInput.value = data.patient;
+    if(nameInput){
+      nameInput.value = data.patient;
+      checkSubmit();
+    }
   }
 
   // Renderizar perguntas

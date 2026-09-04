@@ -120,6 +120,12 @@ function renderForm(data){
 
   root.innerHTML = html;
 
+  // Pré-preencher nome do paciente a partir do cadastro
+  if(data.patient){
+    var nameInput = document.getElementById('full-name');
+    if(nameInput) nameInput.value = data.patient;
+  }
+
   // Renderizar perguntas
   var container = document.getElementById('q-container');
   questions.forEach(function(q){

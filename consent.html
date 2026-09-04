@@ -277,14 +277,14 @@ h1 {
 </div>
 
 <script>
-  const SUPABASE_URL = 'https://yltkmebcrznhdswfhssm.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_VY3prJ6hS4XMk9wan9hX-w_psOZU-nz';
+  const LGPD_API = 'https://yltkmebcrznhdswfhssm.supabase.co/functions/v1/lgpd-consent';
 
-  const params     = new URLSearchParams(window.location.search);
-  const patientId  = params.get('patient_id');
-  const token      = params.get('token');
-  const clinicName = params.get('clinic') ?? 'ZONCLI';
+  // Token vem do hash (#t=TOKEN) para nunca ser enviado ao servidor no GET
+  const raw   = location.hash.slice(1);
+  const token = new URLSearchParams(raw).get('t') || '';
+  history.replaceState(null, '', location.pathname + location.search);
 
+  let docHash = '';
   const state = { whatsapp: false, marketing: false };
 
   function toggle(key) {
@@ -312,41 +312,28 @@ h1 {
     box.style.display = 'block';
   }
 
-  async function supabaseFetch(path, method, body) {
-    const r = await fetch(SUPABASE_URL + path, {
-      method,
-      headers: {
-        'Content-Type':  'application/json',
-        'apikey':        SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer':        method === 'PATCH' ? 'return=minimal' : '',
-      },
-      body: body ? JSON.stringify(body) : undefined,
+  async function apiPost(body) {
+    const r = await fetch(LGPD_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
     });
-    return r;
+    return { ok: r.ok, data: await r.json() };
   }
 
   async function loadPatient() {
-    if (!patientId || !token) { showState('error-state'); return; }
-
-    document.getElementById('clinic-display').textContent = clinicName;
+    if (!token) { showState('error-state'); return; }
 
     try {
-      const r = await supabaseFetch(
-        `/rest/v1/patients?id=eq.${patientId}&lgpd_token=eq.${token}&select=name,lgpd_consent,whatsapp_consent,marketing_consent`,
-        'GET'
-      );
-      const data = await r.json();
-      if (!data || data.length === 0) { showState('error-state'); return; }
-
-      const p = data[0];
-
-      // Já tinha consentido antes
-      if (p.lgpd_consent) { showState('already-state'); return; }
-
-      // Mostra nome
-      if (p.name) {
-        document.getElementById('patient-name-display').textContent = p.name;
+      const { ok, data } = await apiPost({ action: 'inspect', token });
+      if (!ok) {
+        if (data.code === 'used') { showState('already-state'); return; }
+        showState('error-state'); return;
+      }
+      docHash = data.document.hash;
+      document.getElementById('clinic-display').textContent = data.clinic_name;
+      if (data.patient_display_name) {
+        document.getElementById('patient-name-display').textContent = data.patient_display_name;
         document.getElementById('patient-info').style.display = 'flex';
       }
     } catch {
@@ -360,26 +347,23 @@ h1 {
     btn.textContent = 'Registrando...';
 
     try {
-      const now = new Date().toISOString();
-      const r = await supabaseFetch(
-        `/rest/v1/patients?id=eq.${patientId}&lgpd_token=eq.${token}`,
-        'PATCH',
-        {
-          lgpd_consent:       true,
-          lgpd_date:          now,
-          lgpd_method:        'whatsapp',
-          whatsapp_consent:   state.whatsapp,
-          whatsapp_consent_date: state.whatsapp ? now : null,
-          marketing_consent:  state.marketing,
-          marketing_consent_date: state.marketing ? now : null,
-        }
-      );
+      const { ok, data } = await apiPost({
+        action: 'accept',
+        token,
+        whatsapp_consent:  state.whatsapp,
+        marketing_consent: state.marketing,
+        document_hash:     docHash,
+      });
 
-      if (!r.ok) throw new Error('Falha ao salvar');
-
-      document.getElementById('consent-timestamp').textContent =
-        'Registrado em: ' + new Date().toLocaleString('pt-BR');
-      showState('success-state');
+      if (ok && data.code === 'accepted') {
+        document.getElementById('consent-timestamp').textContent =
+          'Registrado em: ' + new Date().toLocaleString('pt-BR');
+        showState('success-state');
+        return;
+      }
+      if (data.code === 'used') { showState('already-state'); return; }
+      if (data.code === 'stale_document') { await loadPatient(); btn.disabled = false; btn.textContent = 'Confirmar meu consentimento'; return; }
+      throw new Error(data.code);
     } catch {
       btn.disabled = false;
       btn.textContent = 'Confirmar meu consentimento';
